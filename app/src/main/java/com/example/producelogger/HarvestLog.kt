@@ -1,5 +1,6 @@
 package com.example.producelogger
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,9 +17,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,35 +42,39 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavController
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HarvestLogComposable(navController: NavController) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        // A surface container using the 'background' color from the theme
-        HarvestedProduce(navController = navController, produceList = harvestList)
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    colors = TopAppBarDefaults.largeTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        Row {
+                            Text("Produce Logger")
+                        }
+                    }
+                )
+            }
+        ) {
+            HarvestedProduce(navController = navController, produceList = harvestList)
+        }
     }
 }
 @Composable
 fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<String, String>>) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.Green),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Produce Logger",
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 50.sp,
-                    textAlign = TextAlign.Center
-                )
-            )
-        }
-        Divider()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize().padding(0.dp, 60.dp)
+    ) {
         Button(
             modifier = Modifier.padding(15.dp),
             onClick = {
@@ -86,11 +95,10 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
                 )
             )
         }
-        Divider()
+        Divider(color = Color.Green)
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(0.dp, 20.dp)
                 .fillMaxWidth()
         ) {
             Text(
@@ -103,7 +111,10 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
                     textAlign = TextAlign.Center
                 )
             )
-
+            Divider(
+                color = Color.Green,
+                modifier = Modifier.size(1.dp, 40.dp)
+            )
             Text(
                 "Item", modifier = Modifier
                     .size(360.dp, 40.dp)
@@ -113,6 +124,10 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center
                 )
+            )
+            Divider(
+                color = Color.Green,
+                modifier = Modifier.size(1.dp, 40.dp)
             )
             Text(
                 "Weight", modifier = Modifier
@@ -125,15 +140,21 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
                 )
             )
         }
-        Divider()
+        Divider(
+            color = Color.Green,
+            modifier = Modifier.height(3.dp)
+        )
+        var rowColor: Boolean = true
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             items(produceList) { harvest ->
                 if (harvest["date"] != null && harvest["item"] != null && harvest["weight"] != null) {
                     AddItem(
                         dateHarvested = harvest["date"]!!,
                         produce = harvest["item"]!!,
-                        weight = harvest["weight"]!!
+                        weight = harvest["weight"]!!,
+                        rowColor = rowColor
                     )
+                    rowColor = !rowColor
                 }
             }
         }
@@ -141,10 +162,14 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
 }
 
 @Composable
-fun AddItem(dateHarvested: String, produce: String, weight: String) {
-    val context = LocalContext.current
+fun AddItem(dateHarvested: String, produce: String, weight: String, rowColor: Boolean) {
     Row(
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = if (rowColor) Color.LightGray else Color.White
+            )
     ) {
         Text(
             AnnotatedString(dateHarvested),
@@ -156,6 +181,10 @@ fun AddItem(dateHarvested: String, produce: String, weight: String) {
                 textAlign = TextAlign.Center
             )
         )
+        Divider(
+            color = Color.Green,
+            modifier = Modifier.size(1.dp, 40.dp)
+        )
         Text(
             AnnotatedString(produce),
             modifier = Modifier
@@ -165,6 +194,10 @@ fun AddItem(dateHarvested: String, produce: String, weight: String) {
                 fontSize = 25.sp,
                 textAlign = TextAlign.Center
             )
+        )
+        Divider(
+            color = Color.Green,
+            modifier = Modifier.size(1.dp, 40.dp)
         )
         Text(
             AnnotatedString(weight),
