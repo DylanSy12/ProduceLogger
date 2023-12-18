@@ -54,12 +54,20 @@ fun HarvestLogComposable(navController: NavController) {
             topBar = {
                 TopAppBar(
                     colors = TopAppBarDefaults.largeTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = com.example.producelogger.ui.theme.DarkGreen,
+                        titleContentColor = com.example.producelogger.ui.theme.Brown,
                     ),
                     title = {
-                        Row {
-                            Text("Produce Logger")
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 5.dp)
+                        ) {
+                            Text(
+                                text = "Produce Logger",
+                                style = TextStyle(fontSize = 50.sp)
+                            )
                         }
                     }
                 )

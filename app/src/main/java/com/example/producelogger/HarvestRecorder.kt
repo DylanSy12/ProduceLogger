@@ -69,6 +69,7 @@ fun HarvestRecorderComposable(navController: NavController) {
     var harvest: MutableMap<String, String> = mutableMapOf()
     var openPasswordPopup = remember { mutableStateOf(false) }
     var openIncorrectPasswordPopup = remember { mutableStateOf(false) }
+    var openInputPopup = remember { mutableStateOf(false) }
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Scaffold(
             topBar = {
@@ -164,7 +165,7 @@ fun HarvestRecorderComposable(navController: NavController) {
                     singleLine = true,
                     onValueChange = {
                         weight = it
-                        harvest["weight"] = weight.text+" lbs."
+                        harvest["weight"] = weight.text + " lbs."
                     },
                     textStyle = TextStyle(
                         fontSize = 40.sp,
@@ -180,12 +181,17 @@ fun HarvestRecorderComposable(navController: NavController) {
                                 fontSize = 35.sp
                             )
                         )
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 Button(
                     modifier = Modifier.padding(0.dp, 10.dp),
                     onClick = {
-                        openPasswordPopup.value = true
+                        if (date.text != "" && weight.text != "" && item.text != "") {
+                            openPasswordPopup.value = true
+                        } else {
+                            openInputPopup.value = true
+                        }
                     }
                 ) {
                     Text(
@@ -221,11 +227,22 @@ fun HarvestRecorderComposable(navController: NavController) {
             }
             when {
                 openIncorrectPasswordPopup.value -> {
-                    IncorrectPasswordPopup(
+                    AlertPopup(
                         onDismissRequest = {
                             openIncorrectPasswordPopup.value = false
                             openPasswordPopup.value = true
-                        }
+                        },
+                        "Incorrect Password"
+                    )
+                }
+            }
+            when {
+                openInputPopup.value -> {
+                    AlertPopup(
+                        onDismissRequest = {
+                            openInputPopup.value = false
+                        },
+                        "Please enter all values"
                     )
                 }
             }
@@ -322,9 +339,9 @@ fun PasswordPopup(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IncorrectPasswordPopup(onDismissRequest: () -> Unit) {
+fun AlertPopup(onDismissRequest: () -> Unit, text: String) {
     AlertDialog(
-        title = { Text(text = "Incorrect Password") },
+        title = { Text(text = text) },
         onDismissRequest = { onDismissRequest() },
         confirmButton = {
             TextButton(onClick = { onDismissRequest() }) {
