@@ -3,6 +3,7 @@ package com.example.producelogger
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,15 +12,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -70,6 +75,8 @@ fun HarvestRecorderComposable(navController: NavController) {
     var openPasswordPopup = remember { mutableStateOf(false) }
     var openIncorrectPasswordPopup = remember { mutableStateOf(false) }
     var openInputPopup = remember { mutableStateOf(false) }
+    var openSpecialCharacterPopup = remember { mutableStateOf(false) }
+    var openBackPopup = remember { mutableStateOf(false) }
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Scaffold(
             topBar = {
@@ -94,114 +101,154 @@ fun HarvestRecorderComposable(navController: NavController) {
                 )
             }
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(0.dp, 60.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Date",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 45.sp,
-                        textAlign = TextAlign.Center
-                    )
-                )
-                var temp = getCurrentDateTime().toString("MM/dd/yyyy")
-                var date by remember { mutableStateOf(TextFieldValue(temp)) }
-                harvest["date"] = temp
-                TextField(
-                    value = date,
-                    singleLine = true,
-                    onValueChange = {
-                        date = it
-                        harvest["date"] = date.text
-                    },
-                    textStyle = TextStyle(
-                        fontSize = 40.sp,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .padding(bottom = 10.dp)
-                        .width(600.dp)
-                )
-                Text(
-                    text = "Item",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 45.sp,
-                        textAlign = TextAlign.Center
-                    )
-                )
-                var item by remember { mutableStateOf(TextFieldValue("")) }
-                TextField(
-                    value = item,
-                    singleLine = true,
-                    onValueChange = {
-                        item = it
-                        harvest["item"] = item.text
-                    },
-                    textStyle = TextStyle(
-                        fontSize = 40.sp,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .padding(bottom = 10.dp)
-                        .width(600.dp)
-                )
-                Text(
-                    text = "Weight",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 45.sp,
-                        textAlign = TextAlign.Center
-                    )
-                )
-                var weight by remember { mutableStateOf(TextFieldValue("")) }
-                TextField(
-                    value = weight,
-                    singleLine = true,
-                    onValueChange = {
-                        weight = it
-                        harvest["weight"] = weight.text + " lbs."
-                    },
-                    textStyle = TextStyle(
-                        fontSize = 40.sp,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .padding(bottom = 10.dp)
-                        .width(600.dp),
-                    trailingIcon = {
-                        Text(
-                            text = " lbs.",
-                            style = TextStyle(
-                                fontSize = 35.sp
-                            )
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
+            Column {
                 Button(
-                    modifier = Modifier.padding(0.dp, 10.dp),
+                    modifier = Modifier.padding(10.dp, 70.dp, 0.dp, 0.dp),
                     onClick = {
-                        if (date.text != "" && weight.text != "" && item.text != "") {
-                            openPasswordPopup.value = true
-                        } else {
-                            openInputPopup.value = true
-                        }
-                    }
+                        openBackPopup.value = true
+                    },
+                    border = BorderStroke(4.dp, com.example.producelogger.ui.theme.Brown),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = com.example.producelogger.ui.theme.DarkGreen,
+                        contentColor = com.example.producelogger.ui.theme.Brown
+                    )
                 ) {
                     Text(
-                        text = "Record Harvest",
+                        text = "<- Back",
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
-                            fontSize = 50.sp,
-                            textAlign = TextAlign.Center
+                            fontSize = 35.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
                         )
                     )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(0.dp, 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Date",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 45.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
+                        )
+                    )
+                    var temp = getCurrentDateTime().toString("MM/dd/yyyy")
+                    var date by remember { mutableStateOf(TextFieldValue(temp)) }
+                    harvest["date"] = temp
+                    TextField(
+                        value = date,
+                        singleLine = true,
+                        onValueChange = {
+                            date = it
+                        },
+                        textStyle = TextStyle(
+                            fontSize = 40.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
+                        ),
+                        modifier = Modifier
+                            .padding(bottom = 10.dp)
+                            .fillMaxWidth()
+                    )
+                    Text(
+                        text = "Item",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 45.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
+                        )
+                    )
+                    var item by remember { mutableStateOf(TextFieldValue("")) }
+                    TextField(
+                        value = item,
+                        singleLine = true,
+                        onValueChange = {
+                            if (it.text.length <= 34) item = it
+                        },
+                        textStyle = TextStyle(
+                            fontSize = 38.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
+                        ),
+                        modifier = Modifier
+                            .padding(bottom = 10.dp)
+                            .fillMaxWidth()
+                    )
+                    Text(
+                        text = "Weight",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 45.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
+                        )
+                    )
+                    var weight by remember { mutableStateOf(TextFieldValue("")) }
+                    TextField(
+                        value = weight,
+                        singleLine = true,
+                        onValueChange = {
+                            if (it.text.length <= 6) weight = it
+                        },
+                        textStyle = TextStyle(
+                            fontSize = 40.sp,
+                            textAlign = TextAlign.Center,
+                            color = com.example.producelogger.ui.theme.Brown
+                        ),
+                        modifier = Modifier
+                            .padding(bottom = 10.dp)
+                            .fillMaxWidth(),
+                        trailingIcon = {
+                            Text(
+                                text = " lbs.",
+                                style = TextStyle(
+                                    fontSize = 35.sp,
+                                    color = com.example.producelogger.ui.theme.Brown
+                                )
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                    Button(
+                        modifier = Modifier.padding(0.dp, 10.dp),
+                        onClick = {
+                            if (date.text == "" || weight.text == "" || item.text == "") {
+                                openInputPopup.value = true
+                            } else if (!(weight.text.matches("-?[0-9]+(\\.[0-9]+)?".toRegex()))) {
+                                openSpecialCharacterPopup.value = true
+                            } else {
+                                harvest["date"] = date.text
+                                harvest["item"] = item.text
+                                var temp = weight.text
+                                if (temp[temp.length - 1] == '.') {
+                                    temp = temp.take(5)
+                                }
+                                harvest["weight"] = "$temp lbs."
+                                openPasswordPopup.value = true
+                            }
+                        },
+                        border = BorderStroke(8.dp, com.example.producelogger.ui.theme.Brown),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = com.example.producelogger.ui.theme.DarkGreen,
+                            contentColor = com.example.producelogger.ui.theme.Brown
+                        )
+                    ) {
+                        Text(
+                            text = "Record Harvest",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 50.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        )
+                    }
                 }
             }
             when {
@@ -210,7 +257,7 @@ fun HarvestRecorderComposable(navController: NavController) {
                         onDismissRequest = { openPasswordPopup.value = false },
                         onCorrectPassword = {
                             openPasswordPopup.value = false
-                            harvestList.add(harvest)
+                            harvestList.add(0, harvest)
                             navController.navigate(Screen.HarvestLog.route) {
                                 popUpTo(Screen.HarvestLog.route) {
                                     saveState = true
@@ -228,21 +275,60 @@ fun HarvestRecorderComposable(navController: NavController) {
             when {
                 openIncorrectPasswordPopup.value -> {
                     AlertPopup(
+                        onConfirmRequest = {
+                            openIncorrectPasswordPopup.value = false
+                            openPasswordPopup.value = true
+                        },
                         onDismissRequest = {
                             openIncorrectPasswordPopup.value = false
                             openPasswordPopup.value = true
                         },
-                        "Incorrect Password"
+                        text = "Incorrect Password"
                     )
                 }
             }
             when {
                 openInputPopup.value -> {
                     AlertPopup(
+                        onConfirmRequest = {
+                            openInputPopup.value = false
+                        },
                         onDismissRequest = {
                             openInputPopup.value = false
                         },
-                        "Please enter all values"
+                        text = "Please enter all values"
+                    )
+                }
+            }
+            when {
+                openSpecialCharacterPopup.value -> {
+                    AlertPopup(
+                        onConfirmRequest = {
+                            openSpecialCharacterPopup.value = false
+                        },
+                        onDismissRequest = {
+                            openSpecialCharacterPopup.value = false
+                        },
+                        text = "Please enter only numbers for the weight"
+                    )
+                }
+            }
+            when {
+                openBackPopup.value -> {
+                    AlertPopup(
+                        onConfirmRequest = {
+                            openBackPopup.value = false
+                            navController.navigate(Screen.HarvestLog.route) {
+                                popUpTo(Screen.HarvestLog.route) {
+                                    saveState = true
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        onDismissRequest = {
+                            openBackPopup.value = false
+                        },
+                        text = "Going back will clear inputs, are you sure?"
                     )
                 }
             }
@@ -262,7 +348,7 @@ fun PasswordPopup(
         Card(
             modifier = Modifier.wrapContentSize(),
             shape = RoundedCornerShape(16.dp),
-            border = BorderStroke(5.dp, com.example.producelogger.ui.theme.DarkGreen)
+            border = BorderStroke(5.dp, com.example.producelogger.ui.theme.Brown)
         ) {
             Column(
                 modifier = Modifier.wrapContentSize(),
@@ -273,7 +359,9 @@ fun PasswordPopup(
                     text = "Enter password to finish recording the harvest",
                     style = TextStyle(
                         fontSize = 35.sp,
-                        textAlign = TextAlign.Center
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = com.example.producelogger.ui.theme.Brown,
                     ),
                     modifier = Modifier.padding(vertical = 5.dp)
                 )
@@ -281,7 +369,8 @@ fun PasswordPopup(
                     text = "Password:",
                     style = TextStyle(
                         fontSize = 28.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = com.example.producelogger.ui.theme.Brown
                     )
                 )
                 TextField(
@@ -292,7 +381,8 @@ fun PasswordPopup(
                     },
                     textStyle = TextStyle(
                         fontSize = 25.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = com.example.producelogger.ui.theme.Brown
                     ),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -309,7 +399,8 @@ fun PasswordPopup(
                             text = "Cancel",
                             style = TextStyle(
                                 fontSize = 30.sp,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = com.example.producelogger.ui.theme.DarkRed
                             )
                         )
                     }
@@ -327,7 +418,8 @@ fun PasswordPopup(
                             text = "Confirm",
                             style = TextStyle(
                                 fontSize = 30.sp,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = com.example.producelogger.ui.theme.MediumGreen
                             )
                         )
                     }
@@ -339,22 +431,74 @@ fun PasswordPopup(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlertPopup(onDismissRequest: () -> Unit, text: String) {
-    AlertDialog(
-        title = { Text(text = text) },
-        onDismissRequest = { onDismissRequest() },
-        confirmButton = {
-            TextButton(onClick = { onDismissRequest() }) {
+fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text: String) {
+    Dialog( onDismissRequest = onDismissRequest) {
+        Card(
+            modifier = Modifier.wrapContentSize(),
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(5.dp, com.example.producelogger.ui.theme.Brown)
+        ) {
+            Column(
+                modifier = Modifier.wrapContentSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    text = "Confirm",
+                    text = text,
                     style = TextStyle(
-                        fontSize = 15.sp,
-                        textAlign = TextAlign.Center
-                    )
+                        fontSize = 35.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = com.example.producelogger.ui.theme.Brown,
+                    ),
+                    modifier = Modifier.padding(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
                 )
+                Row {
+                    if (onConfirmRequest != onDismissRequest) {
+                        TextButton(
+                            onClick = { onDismissRequest() },
+                            modifier = Modifier.padding(bottom = 10.dp, end = 20.dp, top = 0.dp, start = 0.dp),
+                        ) {
+                            Text(
+                                text = "Cancel",
+                                style = TextStyle(
+                                    fontSize = 30.sp,
+                                    textAlign = TextAlign.Center,
+                                    color = com.example.producelogger.ui.theme.DarkRed
+                                )
+                            )
+                        }
+                    }
+                    TextButton(
+                        onClick = { onConfirmRequest() },
+                        modifier = Modifier.padding(bottom = 10.dp),
+                    ) {
+                        Text(
+                            text = "Confirm",
+                            style = TextStyle(
+                                fontSize = 30.sp,
+                                textAlign = TextAlign.Center,
+                                color = com.example.producelogger.ui.theme.DarkRed
+                            )
+                        )
+                    }
+                    TextButton(
+                        onClick = { onConfirmRequest() },
+                        modifier = Modifier.padding(bottom = 10.dp),
+                    ) {
+                        Text(
+                            text = "Confirm",
+                            style = TextStyle(
+                                fontSize = 30.sp,
+                                textAlign = TextAlign.Center,
+                                color = com.example.producelogger.ui.theme.DarkRed
+                            )
+                        )
+                    }
+                }
             }
         }
-    )
+    }
 }
 
 @Preview(showBackground = true)

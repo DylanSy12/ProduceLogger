@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -34,9 +37,12 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorLong
 import com.example.producelogger.ui.theme.ProduceLoggerTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -81,7 +87,9 @@ fun HarvestLogComposable(navController: NavController) {
 fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<String, String>>) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().padding(0.dp, 60.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 60.dp, bottom = 5.dp)
     ) {
         Button(
             modifier = Modifier.padding(15.dp),
@@ -92,7 +100,12 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
                         inclusive = true
                     }
                 }
-            }
+            },
+            border = BorderStroke(5.dp, com.example.producelogger.ui.theme.Brown),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = com.example.producelogger.ui.theme.DarkGreen,
+                contentColor = com.example.producelogger.ui.theme.Brown
+            )
         ) {
             Text(
                 text = "Record Harvest",
@@ -103,7 +116,7 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
                 )
             )
         }
-        Divider(color = Color.Green)
+        Divider(color = com.example.producelogger.ui.theme.Brown)
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -111,48 +124,51 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
         ) {
             Text(
                 "Date", modifier = Modifier
-                    .size(180.dp, 40.dp)
+                    .weight(1F)
                     .padding(10.dp, 0.dp),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 30.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = com.example.producelogger.ui.theme.Brown
                 )
             )
             Divider(
-                color = Color.Green,
+                color = com.example.producelogger.ui.theme.Brown,
                 modifier = Modifier.size(1.dp, 40.dp)
             )
             Text(
                 "Item", modifier = Modifier
-                    .size(360.dp, 40.dp)
+                    .weight(1.75F)
                     .padding(10.dp, 0.dp),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 30.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = com.example.producelogger.ui.theme.Brown
                 )
             )
             Divider(
-                color = Color.Green,
+                color = com.example.producelogger.ui.theme.Brown,
                 modifier = Modifier.size(1.dp, 40.dp)
             )
             Text(
                 "Weight", modifier = Modifier
-                    .size(180.dp, 40.dp)
+                    .weight(1F)
                     .padding(10.dp, 0.dp),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 30.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = com.example.producelogger.ui.theme.Brown
                 )
             )
         }
         Divider(
-            color = Color.Green,
+            color = com.example.producelogger.ui.theme.Brown,
             modifier = Modifier.height(3.dp)
         )
-        var rowColor: Boolean = true
+        var rowColor = true
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             items(produceList) { harvest ->
                 if (harvest["date"] != null && harvest["item"] != null && harvest["weight"] != null) {
@@ -173,8 +189,10 @@ fun HarvestedProduce(navController: NavController, produceList: ArrayList<Map<St
 fun AddItem(dateHarvested: String, produce: String, weight: String, rowColor: Boolean) {
     Row(
         horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 40.dp, max = 80.dp)
             .background(
                 color = if (rowColor) Color.LightGray else Color.White
             )
@@ -182,39 +200,45 @@ fun AddItem(dateHarvested: String, produce: String, weight: String, rowColor: Bo
         Text(
             AnnotatedString(dateHarvested),
             modifier = Modifier
-                .size(180.dp, 40.dp)
+                .weight(1F)
+                .heightIn(min = 40.dp, max = 80.dp)
                 .padding(10.dp, 5.dp),
             style = TextStyle(
-                fontSize = 25.sp,
-                textAlign = TextAlign.Center
+                fontSize = 22.sp,
+                textAlign = TextAlign.Left,
+                color = com.example.producelogger.ui.theme.Brown
             )
         )
         Divider(
-            color = Color.Green,
-            modifier = Modifier.size(1.dp, 40.dp)
+            color = com.example.producelogger.ui.theme.Brown,
+            modifier = Modifier.width(1.dp).fillMaxHeight()
         )
         Text(
             AnnotatedString(produce),
             modifier = Modifier
-                .size(360.dp, 40.dp)
+                .weight(1.75F)
+                .heightIn(min = 40.dp, max = 80.dp)
                 .padding(10.dp, 5.dp),
             style = TextStyle(
-                fontSize = 25.sp,
-                textAlign = TextAlign.Center
+                fontSize = 22.sp,
+                textAlign = TextAlign.Center,
+                color = com.example.producelogger.ui.theme.Brown
             )
         )
         Divider(
-            color = Color.Green,
-            modifier = Modifier.size(1.dp, 40.dp)
+            color = com.example.producelogger.ui.theme.Brown,
+            modifier = Modifier.width(1.dp).fillMaxHeight()
         )
         Text(
             AnnotatedString(weight),
             modifier = Modifier
-                .size(180.dp, 40.dp)
+                .weight(1F)
+                .heightIn(min = 40.dp, max = 80.dp)
                 .padding(10.dp, 5.dp),
             style = TextStyle(
-                fontSize = 25.sp,
-                textAlign = TextAlign.Center
+                fontSize = 22.sp,
+                textAlign = TextAlign.Right,
+                color = com.example.producelogger.ui.theme.Brown
             )
         )
     }
