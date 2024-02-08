@@ -5,24 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
+// Screens
 @Composable
-fun SetupNavGraph(
-    navController: NavHostController
-) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.HarvestLog.route
-    ) {
-        composable(
-            route = Screen.HarvestLog.route
-        ) {
-            HarvestLogComposable(navController = navController)
-        }
-        composable(
-            route = Screen.HarvestRecorder.route
-        ) {
-            HarvestRecorderComposable(navController = navController)
-        }
+fun SetupNavGraph(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Screen.HarvestLog.route) {
+        composable(route = Screen.HarvestLog.route) { HarvestLogComposable(navController = navController) }
+        composable(route = Screen.HarvestRecorder.route) { HarvestRecorderComposable(navController = navController) }
     }
-
 }

@@ -1,4 +1,4 @@
 package com.example.producelogger
 
-var harvestList: ArrayList<Map<String, String>> = ArrayList()
-var password: String = "password"
+// List that stores the recorded harvests
+var harvestList: ArrayList<Harvest> = ArrayList()
