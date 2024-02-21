@@ -73,7 +73,7 @@ fun HarvestLogComposable(navController: NavController) {
             )
         }
 
-        Divider(color = Brown)
+        Divider(color = Brown, modifier = Modifier.height(2.dp))
 
         // Filters
         // Filter header
@@ -162,7 +162,7 @@ fun HarvestLogComposable(navController: NavController) {
             )
         }
 
-        Divider(color = Brown)
+        Divider(color = Brown, modifier = Modifier.height(2.dp))
 
         // HarvestLog
         // List headers
@@ -180,8 +180,8 @@ fun HarvestLogComposable(navController: NavController) {
                         else sortBy = "D"
                     },
                     modifier = Modifier
-                        .size(35.dp, 35.dp)
-                        .padding(start = 10.dp, end = 5.dp, top = 2.5F.dp, bottom = 2.5F.dp)
+                        .size(35.dp, 40.dp)
+                        .padding(start = 10.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                 )
                 Text(
                     text = "Date",
@@ -207,8 +207,8 @@ fun HarvestLogComposable(navController: NavController) {
                         else sortBy = "I"
                     },
                     modifier = Modifier
-                        .size(35.dp, 35.dp)
-                        .padding(start = 10.dp, end = 5.dp, top = 2.5F.dp, bottom = 2.5F.dp)
+                        .size(35.dp, 40.dp)
+                        .padding(start = 10.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                 )
                 Text(
                     text = "Item",
@@ -234,8 +234,8 @@ fun HarvestLogComposable(navController: NavController) {
                         else sortBy = "W"
                     },
                     modifier = Modifier
-                        .size(35.dp, 35.dp)
-                        .padding(start = 10.dp, end = 5.dp, top = 2.5F.dp, bottom = 2.5F.dp)
+                        .size(35.dp, 40.dp)
+                        .padding(start = 10.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                 )
                 Text(
                     text = "Weight",
@@ -252,10 +252,10 @@ fun HarvestLogComposable(navController: NavController) {
             }
         }
 
-        Divider(color = Brown, modifier = Modifier.height(3.dp))
+        Divider(color = Brown, modifier = Modifier.height(4.dp))
 
         // Displays harvestList
-        var rowColor = true
+//        var rowColor by remember { mutableStateOf(true) }
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             items(harvestList.sort()) { harvest ->
                 // Check for filters
@@ -265,8 +265,9 @@ fun HarvestLogComposable(navController: NavController) {
                     searchWeight in harvest.weight
                 ) {
                     // Displays Harvest
-                    DisplayHarvest(harvest = harvest, rowColor = rowColor)
-                    rowColor = !rowColor
+                    DisplayHarvest(harvest = harvest, /*rowColor = rowColor*/)
+//                    rowColor = !rowColor
+                    Divider(color = Brown, modifier = Modifier.height(0.5F.dp))
                 }
             }
         }
@@ -275,14 +276,14 @@ fun HarvestLogComposable(navController: NavController) {
 
 // Displays Harvest
 @Composable
-fun DisplayHarvest(harvest: Harvest, rowColor: Boolean) {
+fun DisplayHarvest(harvest: Harvest, /*rowColor: Boolean*/) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp, max = 80.dp)
-            .background(color = if (rowColor) Color.LightGray else Color.White)
+//            .background(color = if (rowColor) Color.LightGray else Color.White)
     ) {
         Text(
             text = harvest.date,
