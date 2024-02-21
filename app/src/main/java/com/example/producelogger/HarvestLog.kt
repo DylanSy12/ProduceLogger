@@ -42,7 +42,9 @@ import androidx.navigation.NavController
 fun HarvestLogComposable(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().padding(top = 60.dp, bottom = 5.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 60.dp, bottom = 5.dp)
     ) {
         // Button to navigate to HarvestRecorder
         Button(
@@ -98,7 +100,7 @@ fun HarvestLogComposable(navController: NavController) {
             )
             Text(
                 text = "Item",
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1.75f),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 21.sp,
@@ -121,7 +123,7 @@ fun HarvestLogComposable(navController: NavController) {
         var searchDate by remember { mutableStateOf("") }
         var searchItem by remember { mutableStateOf("") }
         var searchWeight by remember { mutableStateOf("") }
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth().height(50.dp)) {
             OutlinedTextField(
                 value = searchDate,
                 onValueChange = { searchDate = it },
@@ -130,7 +132,9 @@ fun HarvestLogComposable(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 10.dp).weight(1f)
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+                    .weight(1f)
             )
             OutlinedTextField(
                 value = searchItem,
@@ -140,7 +144,9 @@ fun HarvestLogComposable(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 10.dp).weight(1f)
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+                    .weight(1.75f)
             )
             OutlinedTextField(
                 value = searchWeight,
@@ -150,7 +156,9 @@ fun HarvestLogComposable(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 10.dp).weight(1f)
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+                    .weight(1f)
             )
         }
 
@@ -162,38 +170,86 @@ fun HarvestLogComposable(navController: NavController) {
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                text = "Date",
-                modifier = Modifier.weight(1F).padding(10.dp, 0.dp),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Center,
-                    color = Brown
+            Row(
+                modifier = Modifier.weight(1F),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                SortButton(
+                    onClick = {
+                        if (sortBy == "D") sortOrder = !sortOrder
+                        else sortBy = "D"
+                    },
+                    modifier = Modifier
+                        .size(35.dp, 35.dp)
+                        .padding(start = 10.dp, end = 5.dp, top = 2.5F.dp, bottom = 2.5F.dp)
                 )
-            )
+                Text(
+                    text = "Date",
+                    modifier = Modifier
+                        .padding(start = 5.dp, end = 10.dp)
+                        .height(40.dp),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Center,
+                        color = Brown
+                    )
+                )
+            }
             Divider(color = Brown, modifier = Modifier.size(1.dp, 40.dp))
-            Text(
-                text = "Item",
-                modifier = Modifier.weight(1.75F).padding(10.dp, 0.dp),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Center,
-                    color = Brown
+            Row(
+                modifier = Modifier.weight(1.75F),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                SortButton(
+                    onClick = {
+                        if (sortBy == "I") sortOrder = !sortOrder
+                        else sortBy = "I"
+                    },
+                    modifier = Modifier
+                        .size(35.dp, 35.dp)
+                        .padding(start = 10.dp, end = 5.dp, top = 2.5F.dp, bottom = 2.5F.dp)
                 )
-            )
+                Text(
+                    text = "Item",
+                    modifier = Modifier
+                        .padding(start = 5.dp, end = 10.dp)
+                        .height(40.dp),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Center,
+                        color = Brown
+                    )
+                )
+            }
             Divider(color = Brown, modifier = Modifier.size(1.dp, 40.dp))
-            Text(
-                text = "Weight",
-                modifier = Modifier.weight(1F).padding(10.dp, 0.dp),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Center,
-                    color = Brown
+            Row(
+                modifier = Modifier.weight(1F),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                SortButton(
+                    onClick = {
+                        if (sortBy == "W") sortOrder = !sortOrder
+                        else sortBy = "W"
+                    },
+                    modifier = Modifier
+                        .size(35.dp, 35.dp)
+                        .padding(start = 10.dp, end = 5.dp, top = 2.5F.dp, bottom = 2.5F.dp)
                 )
-            )
+                Text(
+                    text = "Weight",
+                    modifier = Modifier
+                        .padding(start = 5.dp, end = 10.dp)
+                        .height(40.dp),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Center,
+                        color = Brown
+                    )
+                )
+            }
         }
 
         Divider(color = Brown, modifier = Modifier.height(3.dp))
@@ -201,7 +257,7 @@ fun HarvestLogComposable(navController: NavController) {
         // Displays harvestList
         var rowColor = true
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-            items(harvestList) { harvest ->
+            items(harvestList.sort()) { harvest ->
                 // Check for filters
                 if (
                     searchDate in harvest.date &&
@@ -240,7 +296,9 @@ fun DisplayHarvest(harvest: Harvest, rowColor: Boolean) {
                 color = Brown
             )
         )
-        Divider(color = Brown, modifier = Modifier.width(1.dp).fillMaxHeight())
+        Divider(color = Brown, modifier = Modifier
+            .width(1.dp)
+            .fillMaxHeight())
         Text(
             text = harvest.item,
             modifier = Modifier
@@ -253,7 +311,9 @@ fun DisplayHarvest(harvest: Harvest, rowColor: Boolean) {
                 color = Brown
             )
         )
-        Divider(color = Brown, modifier = Modifier.width(1.dp).fillMaxHeight())
+        Divider(color = Brown, modifier = Modifier
+            .width(1.dp)
+            .fillMaxHeight())
         Text(
             text = "${harvest.weight} lbs.",
             modifier = Modifier
@@ -272,7 +332,7 @@ fun DisplayHarvest(harvest: Harvest, rowColor: Boolean) {
 // Preview
 @Preview(showBackground = true)
 @Composable
-fun screenPreviewLog() {
+fun ScreenPreviewLog() {
     ProduceLoggerTheme {
         HarvestLogComposable(navController = rememberNavController())
     }

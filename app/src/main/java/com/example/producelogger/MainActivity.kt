@@ -28,7 +28,7 @@ import com.example.producelogger.ui.theme.ProduceLoggerTheme
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var navController: NavHostController
+    private lateinit var navController: NavHostController
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
             var c = 1.0
             var i = true
             while (c <= 11) {
-                harvestList.add(Harvest(date = "1/${c.toInt()}/2024", item = "${if (i) "apple" else "banana"}", weight = "${c*1.25}"))
+                harvestList.add(Harvest(date = "1/${c.toInt()}/2024", item = if (i) "apple" else "banana", weight = "${c*1.25}"))
                 c += 0.5
                 i = !i
             }

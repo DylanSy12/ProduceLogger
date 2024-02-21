@@ -41,12 +41,12 @@ import com.example.producelogger.ui.theme.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HarvestRecorderComposable(navController: NavController) {
-    var harvest = Harvest()
-    var openPasswordPopup = remember { mutableStateOf(false) }
-    var openIncorrectPasswordPopup = remember { mutableStateOf(false) }
-    var openInputPopup = remember { mutableStateOf(false) }
-    var openSpecialCharacterPopup = remember { mutableStateOf(false) }
-    var openBackPopup = remember { mutableStateOf(false) }
+    val harvest = Harvest()
+    val openPasswordPopup = remember { mutableStateOf(false) }
+    val openIncorrectPasswordPopup = remember { mutableStateOf(false) }
+    val openInputPopup = remember { mutableStateOf(false) }
+    val openSpecialCharacterPopup = remember { mutableStateOf(false) }
+    val openBackPopup = remember { mutableStateOf(false) }
     Column {
         // Back button
         Button(
@@ -82,7 +82,7 @@ fun HarvestRecorderComposable(navController: NavController) {
                 )
             )
             // Gets current date and converts it to the correct format
-            var temp = getCurrentDateTime().toString("MM/dd/yyyy")
+            val temp = getCurrentDateTime().toString("MM/dd/yyyy")
             var date by remember { mutableStateOf(temp) }
             harvest.date = temp
             TextField(
@@ -163,9 +163,9 @@ fun HarvestRecorderComposable(navController: NavController) {
                         harvest.date = date
                         harvest.item = item
                         // Trims the weight, removes any periods at the end
-                        var temp = weight
-                        if (temp[temp.length - 1] == '.') temp = temp.take(5)
-                        harvest.weight = temp
+                        var tempWeight = weight
+                        if (weight[temp.length - 1] == '.') tempWeight = weight.take(5)
+                        harvest.weight = tempWeight
                         // Opens password popup if required, otherwise records the harvest and switches to the HarvestLog screen
                         if (Constants.REQUIRE_PASSWORD) openPasswordPopup.value = true
                         else {
@@ -371,7 +371,7 @@ fun PasswordPopup(
 // Other popups
 @Composable
 fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text: String) {
-    Dialog( onDismissRequest = onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Card(
             modifier = Modifier.wrapContentSize(),
             shape = RoundedCornerShape(16.dp),
@@ -432,7 +432,7 @@ fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text:
 // Preview
 @Preview(showBackground = true)
 @Composable
-fun screenPreviewLogger() {
+fun ScreenPreviewLogger() {
     ProduceLoggerTheme {
         HarvestRecorderComposable(navController = rememberNavController())
     }
