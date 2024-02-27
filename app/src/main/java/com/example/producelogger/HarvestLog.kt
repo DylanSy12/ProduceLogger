@@ -2,7 +2,6 @@ package com.example.producelogger
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -123,41 +121,41 @@ fun HarvestLogComposable(navController: NavController) {
         var searchDate by remember { mutableStateOf("") }
         var searchItem by remember { mutableStateOf("") }
         var searchWeight by remember { mutableStateOf("") }
-        Row(modifier = Modifier.fillMaxWidth().height(50.dp)) {
+        Row(modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(bottom = 10.dp)) {
             OutlinedTextField(
                 value = searchDate,
                 onValueChange = { searchDate = it },
                 textStyle = TextStyle(
-                    fontSize = 19.sp,
+                    fontSize = 17.sp,
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+                    .padding(start = 8.dp, end = 8.dp)
                     .weight(1f)
             )
             OutlinedTextField(
                 value = searchItem,
                 onValueChange = { searchItem = it },
                 textStyle = TextStyle(
-                    fontSize = 19.sp,
+                    fontSize = 17.sp,
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+                    .padding(start = 8.dp, end = 8.dp)
                     .weight(1.75f)
             )
             OutlinedTextField(
                 value = searchWeight,
                 onValueChange = { searchWeight = it },
                 textStyle = TextStyle(
-                    fontSize = 19.sp,
+                    fontSize = 17.sp,
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
                 modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+                    .padding(start = 8.dp, end = 8.dp)
                     .weight(1f)
             )
         }
@@ -180,13 +178,13 @@ fun HarvestLogComposable(navController: NavController) {
                         else sortBy = "D"
                     },
                     modifier = Modifier
-                        .size(35.dp, 40.dp)
-                        .padding(start = 10.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
+                        .size(36.dp, 40.dp)
+                        .padding(8.dp, 5.dp)
                 )
                 Text(
                     text = "Date",
                     modifier = Modifier
-                        .padding(start = 5.dp, end = 10.dp)
+                        .padding(end = 10.dp)
                         .height(40.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -207,13 +205,13 @@ fun HarvestLogComposable(navController: NavController) {
                         else sortBy = "I"
                     },
                     modifier = Modifier
-                        .size(35.dp, 40.dp)
-                        .padding(start = 10.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
+                        .size(36.dp, 40.dp)
+                        .padding(8.dp, 5.dp)
                 )
                 Text(
                     text = "Item",
                     modifier = Modifier
-                        .padding(start = 5.dp, end = 10.dp)
+                        .padding(end = 10.dp)
                         .height(40.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -234,13 +232,13 @@ fun HarvestLogComposable(navController: NavController) {
                         else sortBy = "W"
                     },
                     modifier = Modifier
-                        .size(35.dp, 40.dp)
-                        .padding(start = 10.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
+                        .size(36.dp, 40.dp)
+                        .padding(8.dp, 5.dp)
                 )
                 Text(
                     text = "Weight",
                     modifier = Modifier
-                        .padding(start = 5.dp, end = 10.dp)
+                        .padding(end = 10.dp)
                         .height(40.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -265,7 +263,7 @@ fun HarvestLogComposable(navController: NavController) {
                     searchWeight in harvest.weight
                 ) {
                     // Displays Harvest
-                    DisplayHarvest(harvest = harvest, /*rowColor = rowColor*/)
+                    DisplayHarvest(harvest = harvest/*, rowColor = rowColor*/)
 //                    rowColor = !rowColor
                     Divider(color = Brown, modifier = Modifier.height(0.5F.dp))
                 }
@@ -276,7 +274,7 @@ fun HarvestLogComposable(navController: NavController) {
 
 // Displays Harvest
 @Composable
-fun DisplayHarvest(harvest: Harvest, /*rowColor: Boolean*/) {
+fun DisplayHarvest(harvest: Harvest/*, rowColor: Boolean*/) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
