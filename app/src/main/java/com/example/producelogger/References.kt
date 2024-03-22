@@ -2,21 +2,29 @@ package com.example.producelogger
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
-// List that stores the recorded harvests
-var harvestList: ArrayList<Harvest> = ArrayList()
+/**
+ * [Database] that stores [Harvest]s locally
+ */
+lateinit var database: Database
 
 /**
- * Sort by variable (default is date)
- * D -> sort by date
- * I -> sort by item
- * W -> sort by weight
+ * [List] that stores the recorded [Harvest]s, gets from the [database]
+ */
+var harvestList: ArrayList<Harvest> by mutableStateOf(database.harvests)
+
+/**
+ * For deciding what to sort [harvestList] by (default is date)
+ * D -> sort by [date][Harvest.date]
+ * I -> sort by [item][Harvest.item]
+ * W -> sort by [weight][Harvest.weight]
  */
 var sortBy by mutableStateOf("D")
 
 /**
- * Sort order variable (default is descending)
+ * For deciding sort order of [harvestList] (default is descending)
  * true -> descending
  * false -> ascending
  */

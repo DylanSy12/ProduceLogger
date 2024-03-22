@@ -1,6 +1,7 @@
 package com.example.producelogger
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -205,7 +206,8 @@ fun HarvestRecorderComposable(navController: NavController) {
                 onDismissRequest = { openPasswordPopup.value = false },
                 onCorrectPassword = {
                     openPasswordPopup.value = false
-                    harvestList.add(0, harvest)
+                    database = Database(navController.context)
+                    database.addHarvest(harvest)
                     navController.navigate(Screen.HarvestLog.route) {
                         popUpTo(Screen.HarvestLog.route) {
                             saveState = true
