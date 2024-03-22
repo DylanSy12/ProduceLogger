@@ -21,6 +21,10 @@ public class Database extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + " ( " + Column_Date + " VARSTRING, "
@@ -59,17 +63,11 @@ public class Database extends SQLiteOpenHelper {
         return harvests;
     }
 
-    public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context,name,factory, version);
-    }
-
     @Override
-    public void onUpgrade (SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
-
-
 
 
 }

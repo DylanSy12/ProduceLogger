@@ -1,7 +1,6 @@
 package com.example.producelogger
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -95,7 +94,9 @@ fun HarvestRecorderComposable(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .fillMaxWidth()
             )
             // Item TextField
             Text(
@@ -117,7 +118,9 @@ fun HarvestRecorderComposable(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .fillMaxWidth()
             )
             // Weight TextField
             Text(
@@ -139,7 +142,9 @@ fun HarvestRecorderComposable(navController: NavController) {
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .fillMaxWidth(),
                 trailingIcon = {
                     Text(
                         text = " lbs.",
@@ -158,7 +163,9 @@ fun HarvestRecorderComposable(navController: NavController) {
                 onClick = {
                     // Checks for empty fields or special characters
                     if (date == "" || weight == "" || item == "") openInputPopup.value = true
-                    else if (!(weight.matches("-?[0-9]+(\\.[0-9]+)?".toRegex()))) openSpecialCharacterPopup.value = true
+                    else if (!(weight.matches("-?[0-9]+(\\.[0-9]+)?".toRegex()))) {
+                        openSpecialCharacterPopup.value = true
+                    }
                     else {
                         // Records the inputs
                         harvest.date = date
@@ -393,14 +400,24 @@ fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text:
                         textAlign = TextAlign.Center,
                         color = Brown,
                     ),
-                    modifier = Modifier.padding(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+                    modifier = Modifier.padding(
+                        top = 10.dp,
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 10.dp
+                    )
                 )
                 // Cancel/Confirm buttons
                 Row {
                     if (onConfirmRequest != onDismissRequest) {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = Modifier.padding(bottom = 10.dp, end = 20.dp, top = 0.dp, start = 0.dp),
+                            modifier = Modifier.padding(
+                                bottom = 10.dp,
+                                end = 20.dp,
+                                top = 0.dp,
+                                start = 0.dp
+                            ),
                         ) {
                             Text(
                                 text = "Cancel",

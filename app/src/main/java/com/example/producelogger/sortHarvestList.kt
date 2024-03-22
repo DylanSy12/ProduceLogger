@@ -1,7 +1,9 @@
 package com.example.producelogger
 
 fun List<Harvest>.sort(): List<Harvest> {
-    return if (sortBy == "D") this.sortByDate(sortOrder) else if (sortBy == "I") this.sortByItem(sortOrder) else this.sortByWeight(sortOrder)
+    return if (sortBy == "D") this.sortByDate(sortOrder) else if (sortBy == "I") this.sortByItem(
+        sortOrder
+    ) else this.sortByWeight(sortOrder)
 }
 
 fun List<Harvest>.sortByDate(descending: Boolean): List<Harvest> {

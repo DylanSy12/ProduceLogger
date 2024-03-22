@@ -1,7 +1,6 @@
 package com.example.producelogger
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -17,7 +16,10 @@ fun SortButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     border: BorderStroke = BorderStroke(1.5F.dp, Brown),
-    colors: ButtonColors = ButtonDefaults.buttonColors(containerColor = DarkGreen, contentColor = Brown)
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        containerColor = DarkGreen,
+        contentColor = Brown
+    )
 ) {
     Button(
         onClick = onClick,

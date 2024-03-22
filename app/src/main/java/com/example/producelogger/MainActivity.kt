@@ -47,7 +47,13 @@ class MainActivity : ComponentActivity() {
             var c = 1.0
             var i = true
             while (c <= 11) {
-                harvestList.add(Harvest(date = "1/${c.toInt()}/2024", item = if (i) "apple" else "banana", weight = "${c*1.25}"))
+                harvestList.add(
+                    Harvest(
+                        date = "1/${c.toInt()}/2024",
+                        item = if (i) "apple" else "banana",
+                        weight = "${c * 1.25}"
+                    )
+                )
                 c += 0.5
                 i = !i
             }
@@ -56,7 +62,10 @@ class MainActivity : ComponentActivity() {
         // Sets screen content
         setContent {
             ProduceLoggerTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     Scaffold(
                         // App header
                         topBar = {
@@ -68,7 +77,9 @@ class MainActivity : ComponentActivity() {
                                 title = {
                                     Row(
                                         horizontalArrangement = Arrangement.Center,
-                                        modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp)
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 5.dp)
                                     ) {
                                         Text(
                                             text = "Produce Logger",
