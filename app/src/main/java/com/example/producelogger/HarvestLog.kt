@@ -31,7 +31,7 @@ import com.example.producelogger.ui.theme.*
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HarvestLogComposable(navController: NavController) {
+fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewModel) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -330,14 +330,5 @@ fun DisplayHarvest(harvest: Harvest/*, rowColor: Boolean*/) {
                 color = Brown
             )
         )
-    }
-}
-
-// Preview
-@Preview(showBackground = true)
-@Composable
-fun ScreenPreviewLog() {
-    ProduceLoggerTheme {
-        HarvestLogComposable(navController = rememberNavController())
     }
 }

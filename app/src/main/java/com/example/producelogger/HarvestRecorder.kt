@@ -40,7 +40,7 @@ import com.example.producelogger.ui.theme.*
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HarvestRecorderComposable(navController: NavController) {
+fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestViewModel) {
     val harvest = Harvest()
     val openPasswordPopup = remember { mutableStateOf(false) }
     val openIncorrectPasswordPopup = remember { mutableStateOf(false) }
@@ -177,7 +177,10 @@ fun HarvestRecorderComposable(navController: NavController) {
                         // Opens password popup if required, otherwise records the harvest and switches to the HarvestLog screen
                         if (Constants.REQUIRE_PASSWORD) openPasswordPopup.value = true
                         else {
-                            harvestList.add(0, harvest)
+                            database = Database(navController.context)
+                            database.addHarvest(harvest)
+                            viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+                            viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                             navController.navigate(Screen.HarvestLog.route) {
                                 popUpTo(Screen.HarvestLog.route) {
                                     saveState = true
@@ -215,6 +218,8 @@ fun HarvestRecorderComposable(navController: NavController) {
                     openPasswordPopup.value = false
                     database = Database(navController.context)
                     database.addHarvest(harvest)
+                    viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                     navController.navigate(Screen.HarvestLog.route) {
                         popUpTo(Screen.HarvestLog.route) {
                             saveState = true
@@ -271,6 +276,7 @@ fun HarvestRecorderComposable(navController: NavController) {
             AlertPopup(
                 onConfirmRequest = {
                     openBackPopup.value = false
+                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                     navController.navigate(Screen.HarvestLog.route) {
                         popUpTo(Screen.HarvestLog.route) {
                             saveState = true
@@ -445,14 +451,5 @@ fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text:
                 }
             }
         }
-    }
-}
-
-// Preview
-@Preview(showBackground = true)
-@Composable
-fun ScreenPreviewLogger() {
-    ProduceLoggerTheme {
-        HarvestRecorderComposable(navController = rememberNavController())
     }
 }

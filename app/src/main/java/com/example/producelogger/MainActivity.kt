@@ -26,6 +26,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.producelogger.ui.theme.Brown
@@ -37,28 +39,20 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
+    private lateinit var viewModel: HarvestViewModel
+    
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        File("/storage/emulated/0/${Environment.DIRECTORY_DOWNLOADS}").mkdirs()
-        // Creates a test harvestList
-        if (Constants.USE_TEST_DATA) {
-            var c = 1.0
-            var i = true
-            while (c <= 11) {
-                harvestList.add(
-                    Harvest(
-                        date = "1/${c.toInt()}/2024",
-                        item = if (i) "apple" else "banana",
-                        weight = "${c * 1.25}"
-                    )
-                )
-                c += 0.5
-                i = !i
-            }
+        
+        viewModel = ViewModelProvider(this)[HarvestViewModel::class.java]
+        
+        viewModel.harvests.observe(this) { harvests ->
+            harvestList = harvests as ArrayList<Harvest>
         }
 
+        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
         // Sets screen content
         setContent {
             ProduceLoggerTheme {
@@ -92,7 +86,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         // Determines which screen to display
                         navController = rememberNavController()
-                        SetupNavGraph(navController = navController)
+                        SetupNavGraph(navController = navController, viewModel = viewModel)
                     }
                 }
             }
