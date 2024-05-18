@@ -1,6 +1,7 @@
 package com.example.producelogger
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,9 +34,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.producelogger.ui.theme.*
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -172,14 +176,17 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                         harvest.item = item
                         // Trims the weight, removes any periods at the end
                         var tempWeight = weight
-                        if (weight[temp.length - 1] == '.') tempWeight = weight.take(5)
+                        if (weight[tempWeight.length - 1] == '.') tempWeight = weight.take(5)
                         harvest.weight = tempWeight
                         // Opens password popup if required, otherwise records the harvest and switches to the HarvestLog screen
                         if (Constants.REQUIRE_PASSWORD) openPasswordPopup.value = true
                         else {
-                            database = Database(navController.context)
-                            database.addHarvest(harvest)
-                            viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+//                            database = Database(navController.context)
+//                            database.addHarvest(harvest)
+//                            viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+                            viewModel.viewModelScope.launch {
+                                ProduceApi.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+                            }
                             viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                             navController.navigate(Screen.HarvestLog.route) {
                                 popUpTo(Screen.HarvestLog.route) {
@@ -216,9 +223,12 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                 onDismissRequest = { openPasswordPopup.value = false },
                 onCorrectPassword = {
                     openPasswordPopup.value = false
-                    database = Database(navController.context)
-                    database.addHarvest(harvest)
-                    viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+//                    database = Database(navController.context)
+//                    database.addHarvest(harvest)
+//                    viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+                    viewModel.viewModelScope.launch {
+                        ProduceApi.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
+                    }
                     viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                     navController.navigate(Screen.HarvestLog.route) {
                         popUpTo(Screen.HarvestLog.route) {

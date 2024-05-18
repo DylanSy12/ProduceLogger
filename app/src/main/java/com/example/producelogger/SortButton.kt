@@ -27,7 +27,6 @@ fun SortButton(
         border = border,
         colors = colors
     ) {
-
+        Text(text = if (sortOrder) "\\/" else "/\\")
     }
-    Text(text = if (sortOrder) "↑" else "↓")
 }

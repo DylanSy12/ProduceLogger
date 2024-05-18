@@ -4,15 +4,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-/**
- * [Database] that stores [Harvest]s locally
- */
-lateinit var database: Database
+///**
+// * [Database] that stores [Harvest]s locally
+// */
+//lateinit var database: Database
 
 /**
  * [List] that stores the recorded [Harvest]s, gets from the [database]
  */
-var harvestList: ArrayList<Harvest> by mutableStateOf(database.harvests)
+var harvestList: List<Harvest> by mutableStateOf(listOf())
 
 /**
  * For deciding what to sort [harvestList] by (default is date)

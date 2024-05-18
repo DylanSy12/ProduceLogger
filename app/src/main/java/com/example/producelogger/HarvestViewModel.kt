@@ -1,5 +1,6 @@
 package com.example.producelogger
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
  *
  * @param repository The repository instance for fetching and adding [Harvest] data.
  */
-class HarvestViewModel(private val repository: HarvestRepository): ViewModel() {
+class HarvestViewModel(private val repository: HarvestRepository = HarvestRepository()): ViewModel() {
 
     /** A private [MutableLiveData] that holds a list of [Harvest] objects. */
     private val _harvests = MutableLiveData<List<Harvest>>()
@@ -34,12 +35,16 @@ class HarvestViewModel(private val repository: HarvestRepository): ViewModel() {
     fun fetchHarvests(apiKeyGoogle: String, libraryId: String) {
         // Launch a coroutine in ViewModelScope
         viewModelScope.launch {
-            // Fetch the plant data from the repository.
-            val harvestResponse = repository.fetchHarvests(apiKeyGoogle, libraryId)
+            // Fetch the harvest data from the repository.
+            val harvestResponse = repository.fetchHarvests(apiKeyGoogle = apiKeyGoogle, libraryId = libraryId)
+            Log.e("ResponseFetch", harvestResponse.toString())
             // If the response is non-null, update _harvests LiveData.
-            if (harvestResponse != null) {
-                _harvests.value = harvestResponse.data
-            }
+//            var harvestsList = mutableListOf<Harvest>()
+//            harvestResponse.data.forEach {harvest ->
+//                harvestsList.add(Harvest(harvest["date"].toString(), harvest["item"].toString(), harvest["weight"].toString()))
+//            }
+//            _harvests.value = harvestsList
+            _harvests.value = harvestResponse.data
         }
     }
 

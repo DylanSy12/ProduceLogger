@@ -1,5 +1,6 @@
 package com.example.producelogger
 
+import android.util.Log
 import okhttp3.ResponseBody
 
 /**
@@ -19,7 +20,7 @@ class HarvestRepository {
      * @param libraryId The library ID for accessing the Google Sheet.
      * @return A [HarvestResponse] object containing a list of [Harvest]s or null if the request fails.
      */
-    suspend fun fetchHarvests(apiKeyGoogle: String, libraryId: String): HarvestResponse? {
+    suspend fun fetchHarvests(apiKeyGoogle: String, libraryId: String): HarvestResponse {
         return SheetApi.retrofitService.getHarvests(apiKeyGoogle, libraryId)
     }
 
@@ -31,7 +32,7 @@ class HarvestRepository {
      * @param harvest the [Harvest] object to be added to the sheet.
      * @return A [ResponseBody] object indicating the result of the operation or null if the request fails.
      */
-    suspend fun addHarvest(apiKeyGoogle: String, libraryId: String, harvest: Harvest): ResponseBody? {
+    suspend fun addHarvest(apiKeyGoogle: String, libraryId: String, harvest: Harvest): ResponseBody {
         return SheetApi.retrofitService.addHarvest(apiKeyGoogle, libraryId, harvest)
     }
 }
