@@ -1,12 +1,8 @@
 package com.example.producelogger
 
+//import com.example.producelogger.ProduceApi.getHarvests
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,30 +22,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.producelogger.ProduceApi.getHarvests
 import com.example.producelogger.ui.theme.Brown
 import com.example.producelogger.ui.theme.DarkGreen
 import com.example.producelogger.ui.theme.ProduceLoggerTheme
-import kotlinx.coroutines.launch
-import java.io.File
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
     private lateinit var viewModel: HarvestViewModel
-    
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         viewModel = ViewModelProvider(this)[HarvestViewModel::class.java]
 
         viewModel.harvests.observe(this) { harvests ->
