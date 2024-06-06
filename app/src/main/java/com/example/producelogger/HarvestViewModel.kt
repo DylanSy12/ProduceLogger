@@ -50,8 +50,6 @@ class HarvestViewModel(private val repository: HarvestRepository = HarvestReposi
      * This method is a coroutine, which allows it to perform long-running operations
      * such as network requests or disk access without blocking the main thread.
      *
-     * @param apiKeyGoogle The API key for accessing the Google Sheet.
-     * @param libraryId The library ID for accessing the Google Sheet.
      * @param harvest The [Harvest] data to be added.
      */
     fun addHarvest(harvest: Harvest) {

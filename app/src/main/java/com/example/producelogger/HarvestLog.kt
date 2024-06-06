@@ -1,8 +1,6 @@
 package com.example.producelogger
 
 import android.annotation.SuppressLint
-import android.text.format.DateFormat
-import android.text.style.TtsSpan.DateBuilder
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -24,15 +22,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.producelogger.ui.theme.*
-import java.text.SimpleDateFormat
-import java.util.Locale
 
+/**
+ * [Composable] function for displaying the screen for displaying recorded [Harvest]s.
+ *
+ * @param navController The [NavController] controlling which screen is displayed.
+ * @param viewModel The [ViewModel] for making HTTP requests.
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,12 +48,7 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
         Button(
             modifier = Modifier.padding(15.dp),
             onClick = {
-                navController.navigate(Screen.HarvestRecorder.route) {
-                    popUpTo(Screen.HarvestRecorder.route) {
-                        saveState = true
-                        inclusive = true
-                    }
-                }
+                switchScreens(navController, Screen.HarvestRecorder.route)
             },
             border = BorderStroke(5.dp, Brown),
             colors = ButtonDefaults.buttonColors(
@@ -128,7 +124,10 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
         ) {
             OutlinedTextField(
                 value = searchDate,
-                onValueChange = { searchDate = it },
+                onValueChange = {
+                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    searchDate = it
+                },
                 textStyle = TextStyle(
                     fontSize = 17.sp,
                     textAlign = TextAlign.Center,
@@ -140,7 +139,10 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
             )
             OutlinedTextField(
                 value = searchItem,
-                onValueChange = { searchItem = it },
+                onValueChange = {
+                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    searchItem = it
+                },
                 textStyle = TextStyle(
                     fontSize = 17.sp,
                     textAlign = TextAlign.Center,
@@ -152,7 +154,10 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
             )
             OutlinedTextField(
                 value = searchWeight,
-                onValueChange = { searchWeight = it },
+                onValueChange = {
+                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    searchWeight = it
+                },
                 textStyle = TextStyle(
                     fontSize = 17.sp,
                     textAlign = TextAlign.Center,
@@ -178,12 +183,14 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
             ) {
                 SortButton(
                     onClick = {
+                        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                         if (sortBy == "D") sortOrder = !sortOrder
                         else sortBy = "D"
                     },
                     modifier = Modifier
                         .size(36.dp, 40.dp)
-                        .padding(8.dp, 5.dp)
+                        .padding(8.dp, 5.dp),
+                    sortingBy = "D"
                 )
                 Text(
                     text = "Date",
@@ -205,12 +212,14 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
             ) {
                 SortButton(
                     onClick = {
+                        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                         if (sortBy == "I") sortOrder = !sortOrder
                         else sortBy = "I"
                     },
                     modifier = Modifier
                         .size(36.dp, 40.dp)
-                        .padding(8.dp, 5.dp)
+                        .padding(8.dp, 5.dp),
+                    sortingBy = "I"
                 )
                 Text(
                     text = "Item",
@@ -232,12 +241,14 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
             ) {
                 SortButton(
                     onClick = {
+                        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                         if (sortBy == "W") sortOrder = !sortOrder
                         else sortBy = "W"
                     },
                     modifier = Modifier
                         .size(36.dp, 40.dp)
-                        .padding(8.dp, 5.dp)
+                        .padding(8.dp, 5.dp),
+                    sortingBy = "W"
                 )
                 Text(
                     text = "Weight",
@@ -257,7 +268,6 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
         Divider(color = Brown, modifier = Modifier.height(4.dp))
 
         // Displays harvestList
-//        var rowColor by remember { mutableStateOf(true) }
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             items(harvestList.sort()) { harvest ->
                 // Check for filters
@@ -267,8 +277,7 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     searchWeight in harvest.weight
                 ) {
                     // Displays Harvest
-                    DisplayHarvest(harvest = harvest/*, rowColor = rowColor*/)
-//                    rowColor = !rowColor
+                    DisplayHarvest(harvest = harvest)
                     Divider(color = Brown, modifier = Modifier.height(0.5F.dp))
                 }
             }
@@ -276,18 +285,21 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
     }
 }
 
-// Displays Harvest
+/**
+ * [Composable] function for displaying a [Row] with the [harvest]'s information.
+ *
+ * @param harvest The [Harvest] to be displayed.
+ */
 @Composable
-fun DisplayHarvest(harvest: Harvest/*, rowColor: Boolean*/) {
+fun DisplayHarvest(harvest: Harvest) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp, max = 80.dp)
-//            .background(color = if (rowColor) Color.LightGray else Color.White)
     ) {
-        var dateList = harvest.date.split("-")
+        val dateList = harvest.date.split("-")
         val date = dateList[1]+"/"+dateList[2].take(2)+"/"+dateList[0]
         Text(
             text = date,

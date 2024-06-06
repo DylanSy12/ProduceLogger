@@ -1,14 +1,11 @@
 package com.example.producelogger
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
-import kotlinx.serialization.json.JsonElement
-import java.io.Serial
 
 /**
  * Data class representing a harvest with various attributes.
  *
- * @property data The date the harvest was done on.
+ * @property date The date the harvest was done on.
  * @property item The item that was harvested.
  * @property weight The weight of the harvest.
  */

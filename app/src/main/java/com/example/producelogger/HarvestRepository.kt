@@ -22,8 +22,6 @@ class HarvestRepository {
     /**
      * Adds a new [Harvest] to the Google Sheet via the API.
      *
-     * @param apiKeyGoogle The API key for accessing the Google Sheet.
-     * @param libraryId The library ID for accessing the Google Sheet.
      * @param harvest the [Harvest] object to be added to the sheet.
      * @return A [ResponseBody] object indicating the result of the operation or null if the request fails.
      */

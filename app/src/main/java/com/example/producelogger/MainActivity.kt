@@ -1,6 +1,5 @@
 package com.example.producelogger
 
-//import com.example.producelogger.ProduceApi.getHarvests
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.producelogger.ui.theme.Brown
@@ -34,6 +34,10 @@ class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
 
     private lateinit var viewModel: HarvestViewModel
+
+    companion object {
+        val refreshManager = RefreshManager()
+    }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +51,7 @@ class MainActivity : ComponentActivity() {
         }
 
         viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+        refreshManager.start(lifecycleScope, viewModel)
         // Sets screen content
         setContent {
             ProduceLoggerTheme {
