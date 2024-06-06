@@ -8,9 +8,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class Constants {
     companion object {
-        const val USE_TEST_DATA: Boolean = true
-        const val REQUIRE_PASSWORD: Boolean = false
-        const val PASSWORD: String = "password"
+//        const val USE_TEST_DATA: Boolean = true
+        const val REQUIRE_PASSWORD: Boolean = true
+        const val PASSWORD: String = "isidore"
         const val API_KEY =
             "39dW0N9yjQhrpvRd2wfoOWioC2lm2RiT3UnvyyKG6W_kWeu5QXvxYZenL4stzZhUO4RipdLwlMwO97ouTjr8hcIHYFSaV2Wqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnGS7vTvxr0kmQbYEHA6Yve_sPD_vCOY2JFjyq7-MTWxHaJKTQVa8ImEXmV4IckMg-4LpHhbw1acg_lOxPmEE-VvCV8zBOEBW1Q"
         const val LIB_ID = "M_guRrXy4yBQDxFBZiKONa_e716StSLTv"
