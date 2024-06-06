@@ -24,6 +24,4 @@ data class Harvest(
  *
  * @property data A list of Harvest objects.
  */
-@Serializable
-//data class HarvestResponse(val data: List<Map<String, JsonElement>>)
 data class HarvestResponse(val data: List<Harvest>)

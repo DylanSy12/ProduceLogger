@@ -2,6 +2,7 @@ package com.example.producelogger
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -11,11 +12,13 @@ class Constants {
         const val REQUIRE_PASSWORD: Boolean = false
         const val PASSWORD: String = "password"
         const val API_KEY =
-            "WwypaSIk_7PIKmD7cXGD22H7ctUGuji21woAlfOsFT1ZDgrxIueXsQfwCELEeu0hz7sTFe7yX4e3EFpTIJo45uHfi0zLlAnzOJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKDF_RqZIMLv8_2APE1J3Id3GqVCQ9zTauVc0Xa4cEc0I0zJreJAMUonGgGvmTMMw69YMOV5WltlvA-9A4NKlTV-erjJLbG9LBSOiWvrOIh6QanmvDeJRYj-6EL-KjY7hyN1VzQcfrf7rg"
-        const val LIB_ID = "MqtWDm5rwXQEwGWHL5ZJa2YMk3ZfA5LIg"
+            "39dW0N9yjQhrpvRd2wfoOWioC2lm2RiT3UnvyyKG6W_kWeu5QXvxYZenL4stzZhUO4RipdLwlMwO97ouTjr8hcIHYFSaV2Wqm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnGS7vTvxr0kmQbYEHA6Yve_sPD_vCOY2JFjyq7-MTWxHaJKTQVa8ImEXmV4IckMg-4LpHhbw1acg_lOxPmEE-VvCV8zBOEBW1Q"
+        const val LIB_ID = "M_guRrXy4yBQDxFBZiKONa_e716StSLTv"
+        const val DEPLOYMENT_ID = "AKfycbwEB3sanbP-y2DDzhtSPWFsg5Q6BT5mQf1QkAuSQqvs--At5osYZgSrBP6zvXTvlsRJ"
 
         // Constant holding the base URL for the API.
         const val SHEET_BASE_URL = "https://script.googleusercontent.com/macros/"
+        const val SHEET_BASE_URL_POST = "https://script.google.com/macros/s/$DEPLOYMENT_ID/"
 
         // Creates a Moshi object and adds a factory for Kotlin objects to it.
         private val moshi = Moshi.Builder()
@@ -24,8 +27,13 @@ class Constants {
 
         // Creates a Retrofit object for making network requests.
         val retrofit = Retrofit.Builder()
-            .addConverterFactory(MoshiConverterFactory.create(moshi)) // Adds a converter factory for serializing and deserializing objects.
+            .addConverterFactory(MoshiConverterFactory.create(moshi).withNullSerialization().asLenient()) // Adds a converter factory for serializing and deserializing objects.
             .baseUrl(SHEET_BASE_URL) // Sets the base URL for the Retrofit object.
+            .build() // Builds the Retrofit object.
+        // Creates a Retrofit object for making network requests.
+        val retrofitPost = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi)) // Adds a converter factory for serializing and deserializing objects.
+            .baseUrl(SHEET_BASE_URL_POST) // Sets the base URL for the Retrofit object.
             .build() // Builds the Retrofit object.
     }
 }

@@ -43,15 +43,10 @@ class MainActivity : ComponentActivity() {
         viewModel = ViewModelProvider(this)[HarvestViewModel::class.java]
 
         viewModel.harvests.observe(this) { harvests ->
-            Log.e("HarvestLogger", "Updating")
             harvestList = harvests as ArrayList<Harvest>
-            Log.e("HarvestLogger", "Updated")
         }
-//
+
         viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
-//        Log.e("HarvestLogger", "RetrievedMain")
-//        lifecycleScope.launch { harvestList = ProduceApi.getHarvests(Constants.API_KEY, Constants.LIB_ID).data }
-//        lifecycleScope.launch { harvestList = getHarvests(Constants.API_KEY, Constants.LIB_ID).data }
         // Sets screen content
         setContent {
             ProduceLoggerTheme {
@@ -91,44 +86,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-//
-//    override fun onResume() {
-//        super.onResume()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        // check if the tablet is API 30 (Android 11) or above
-//        // 'all files access' is only in Android 11+
-//        if (Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()) {
-//            // create intent to open settings
-//            val intent = Intent().apply {
-//                action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-//            }
-//            // open settings
-//            startActivity(intent)
-//        }
-//        // if the tablet is a lower version, we use the old permissions
-//        if (Build.VERSION.SDK_INT < 30) {
-//            // check read and write permissions
-//            if (ActivityCompat.checkSelfPermission(
-//                    this, android.Manifest.permission.READ_EXTERNAL_STORAGE
-//                ) or ActivityCompat.checkSelfPermission(
-//                    this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                ) != PackageManager.PERMISSION_GRANTED
-//            ) {
-//                try {
-//                    // request permissions if not granted
-//                    ActivityCompat.requestPermissions(
-//                        this, arrayOf(
-//                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-//                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                        ), 100
-//                    )
-//                } catch (e: Exception) {
-//                    println(e)
-//                }
-//            }
-//        }
-//    }
 }

@@ -183,10 +183,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                         else {
 //                            database = Database(navController.context)
 //                            database.addHarvest(harvest)
-//                            viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
-                            viewModel.viewModelScope.launch {
-                                ProduceApi.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
-                            }
+                            viewModel.addHarvest(harvest)
                             viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                             navController.navigate(Screen.HarvestLog.route) {
                                 popUpTo(Screen.HarvestLog.route) {
@@ -223,12 +220,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                 onDismissRequest = { openPasswordPopup.value = false },
                 onCorrectPassword = {
                     openPasswordPopup.value = false
-//                    database = Database(navController.context)
-//                    database.addHarvest(harvest)
-//                    viewModel.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
-                    viewModel.viewModelScope.launch {
-                        ProduceApi.addHarvest(Constants.API_KEY, Constants.LIB_ID, harvest)
-                    }
+                    viewModel.addHarvest(harvest)
                     viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
                     navController.navigate(Screen.HarvestLog.route) {
                         popUpTo(Screen.HarvestLog.route) {

@@ -17,54 +17,13 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.Dns
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 import java.net.Inet4Address
-
-class Ipv4OnlyDns : Dns {
-    override fun lookup(hostname: String) =
-        Dns.SYSTEM.lookup(hostname).sortedBy { it !is Inet4Address }
-}
-
-// Creates a client for the http request
-val client = HttpClient(OkHttp) {
-
-    install(ContentNegotiation) {
-        json(Json { ignoreUnknownKeys = true })
-    }
-    engine {
-        preconfigured = OkHttpClient.Builder().dns(Ipv4OnlyDns()).build()
-    }
-    install(Logging) {
-        logger = object : Logger {
-            override fun log(message: String) {
-                Log.d("Ktor", message)
-            }
-        }
-        level = LogLevel.ALL
-    }
-    // Sets the timeout to be 60 seconds
-    install(HttpTimeout) {
-        requestTimeoutMillis = 60 * 1000//900 * 1000 for champs
-        connectTimeoutMillis = 60 * 1000//900 * 1000 for champs
-        socketTimeoutMillis = 60 * 1000//900 * 1000 for champs
-    }
-}
-
-object ProduceApi {
-//    suspend fun getHarvests(apiKeyGoogle: String, libraryId: String): HarvestResponse = client.get("${Constants.SHEET_BASE_URL}echo?") {
-//        parameter("user_content_key", apiKeyGoogle)
-//        parameter("lib", libraryId)
-//    }.body()
-
-    suspend fun addHarvest(apiKeyGoogle: String, libraryId: String, harvest: Harvest) =
-        client.post("${Constants.SHEET_BASE_URL}exec") {
-            parameter("user_content_key", apiKeyGoogle)
-            parameter("lib", libraryId)
-            contentType(ContentType.Application.Any)
-            setBody(harvest)
-        }
-}
 
 /**
  * This interface defines the endpoints for the Google Sheets API service.
@@ -77,27 +36,22 @@ interface SheetApiService {
      * @param libraryId The ID of the library in Google Sheets.
      * @return A [HarvestResponse] object containing the list of harvests fetched from the API.
      */
-    @GET("echo?")
+    @GET("echo")
     suspend fun getHarvests(
         @Query("user_content_key") apiKeyGoogle: String,
-        @Query("lib") libraryId: String
+        @Query("lib") libraryId: String,
     ): HarvestResponse
 
-//    /**
-//     * Sends a [POST] request to add a new [Harvest] data to the Google Sheets.
-//     *
-//     * @param apiKeyGoogle The Google API key for authentication.
-//     * @param libraryId The ID of the library in Google Sheets.
-//     * @param harvest The [Harvest] object containing the data to be added.
-//     * @return A [ResponseBody] object which can be used to handle the response from the API.
-//     */
-//    @POST("echo?")
-//    suspend fun addHarvest(
-//        @Query("user_content_key") apiKeyGoogle: String,
-//        @Query("lib") libraryId: String,
-//
-//        @Body harvest: Harvest
-//    ): ResponseBody
+    /**
+     * Sends a [POST] request to add a new [Harvest] data to the Google Sheets.
+     *
+     * @param apiKeyGoogle The Google API key for authentication.
+     * @param libraryId The ID of the library in Google Sheets.
+     * @param harvest The [Harvest] object containing the data to be added.
+     * @return A [ResponseBody] object which can be used to handle the response from the API.
+     */
+    @POST("exec")
+    suspend fun addHarvest(@Body harvest: Harvest): ResponseBody
 }
 
 /**
@@ -109,5 +63,8 @@ object SheetApi {
      */
     val retrofitService: SheetApiService by lazy {
         Constants.retrofit.create(SheetApiService::class.java)
+    }
+    val retrofitServicePost: SheetApiService by lazy {
+        Constants.retrofitPost.create(SheetApiService::class.java)
     }
 }

@@ -1,6 +1,8 @@
 package com.example.producelogger
 
 import android.annotation.SuppressLint
+import android.text.format.DateFormat
+import android.text.style.TtsSpan.DateBuilder
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -28,6 +30,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.producelogger.ui.theme.*
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -283,8 +287,10 @@ fun DisplayHarvest(harvest: Harvest/*, rowColor: Boolean*/) {
             .heightIn(min = 40.dp, max = 80.dp)
 //            .background(color = if (rowColor) Color.LightGray else Color.White)
     ) {
+        var dateList = harvest.date.split("-")
+        val date = dateList[1]+"/"+dateList[2].take(2)+"/"+dateList[0]
         Text(
-            text = harvest.date,
+            text = date,
             modifier = Modifier
                 .weight(1F)
                 .heightIn(min = 40.dp, max = 80.dp)

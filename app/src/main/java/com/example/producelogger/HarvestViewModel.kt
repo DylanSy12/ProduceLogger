@@ -39,13 +39,7 @@ class HarvestViewModel(private val repository: HarvestRepository = HarvestReposi
             // Fetch the harvest data from the repository.
             val harvestResponse =
                 repository.fetchHarvests(apiKeyGoogle = apiKeyGoogle, libraryId = libraryId)
-            Log.e("ResponseFetch", harvestResponse.toString())
             // If the response is non-null, update _harvests LiveData.
-//            var harvestsList = mutableListOf<Harvest>()
-//            harvestResponse.data.forEach {harvest ->
-//                harvestsList.add(Harvest(harvest["date"].toString(), harvest["item"].toString(), harvest["weight"].toString()))
-//            }
-//            _harvests.value = harvestsList
             _harvests.value = harvestResponse.data
         }
     }
@@ -60,11 +54,11 @@ class HarvestViewModel(private val repository: HarvestRepository = HarvestReposi
      * @param libraryId The library ID for accessing the Google Sheet.
      * @param harvest The [Harvest] data to be added.
      */
-//    fun addHarvest(apiKeyGoogle: String, libraryId: String, harvest: Harvest) {
-//        // Launch a coroutine in ViewModelScope
-//        viewModelScope.launch {
-//            // Add the new Harvest to the repository.
-//            repository.addHarvest(apiKeyGoogle, libraryId, harvest)
-//        }
-//    }
+    fun addHarvest(harvest: Harvest) {
+        // Launch a coroutine in ViewModelScope
+        viewModelScope.launch {
+            // Add the new Harvest to the repository.
+            repository.addHarvest(harvest)
+        }
+    }
 }
