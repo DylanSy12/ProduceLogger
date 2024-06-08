@@ -9,22 +9,25 @@ import androidx.compose.runtime.setValue
 // */
 //lateinit var database: Database
 
-/**
- * [List] that stores the recorded [Harvest]s, gets from the [database]
- */
+/** A [List] that stores the recorded [Harvests][Harvest] fetched from the Google Sheets API */
 var harvestList: List<Harvest> by mutableStateOf(listOf())
 
 /**
- * For deciding what to sort [harvestList] by (default is date)
- * D -> sort by [date][Harvest.date]
- * I -> sort by [item][Harvest.item]
- * W -> sort by [weight][Harvest.weight]
+ * Determines how the [harvestList] is sorted
+ *
+ * D -> Sort chronologically by [date][Harvest.date] (Default)
+ *
+ * I -> Sort alphabetically by [item][Harvest.item]
+ *
+ * W -> Sort numerically by [weight][Harvest.weight]
  */
 var sortBy by mutableStateOf("D")
 
 /**
- * For deciding sort order of [harvestList] (default is descending)
- * true -> descending
- * false -> ascending
+ * Determines the sort order of the [harvestList]
+ *
+ * true -> Sort in descending order (Default)
+ *
+ * false -> Sort in ascending order
  */
 var sortOrder by mutableStateOf(true)

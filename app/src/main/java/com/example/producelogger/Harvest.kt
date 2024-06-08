@@ -3,11 +3,11 @@ package com.example.producelogger
 import kotlinx.serialization.Serializable
 
 /**
- * Data class representing a harvest with various attributes.
+ * A data class representing a harvest with various attributes
  *
- * @property date The date the harvest was done on.
- * @property item The item that was harvested.
- * @property weight The weight of the harvest.
+ * @property date The date the harvest was done on
+ * @property item The item that was harvested
+ * @property weight The weight of the harvest
  */
 @Serializable
 data class Harvest(
@@ -17,8 +17,8 @@ data class Harvest(
 )
 
 /**
- * Data class representing a response from a Harvest API.
+ * A data class representing a response from a Harvest API
  *
- * @property data A list of Harvest objects.
+ * @property data A [List] of [Harvests][Harvest]
  */
 data class HarvestResponse(val data: List<Harvest>)

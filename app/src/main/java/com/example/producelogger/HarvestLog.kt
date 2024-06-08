@@ -29,10 +29,10 @@ import androidx.navigation.NavController
 import com.example.producelogger.ui.theme.*
 
 /**
- * [Composable] function for displaying the screen for displaying recorded [Harvest]s.
+ * A [Composable] function for displaying the screen for displaying recorded [Harvests][Harvest]
  *
- * @param navController The [NavController] controlling which screen is displayed.
- * @param viewModel The [ViewModel] for making HTTP requests.
+ * @param navController The [NavController] controlling which screen is displayed
+ * @param viewModel The [ViewModel] for managing [Harvest] data
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,17 +44,14 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
             .fillMaxSize()
             .padding(top = 60.dp, bottom = 5.dp)
     ) {
-        // Button to navigate to HarvestRecorder
+        // Button to navigate to the HarvestRecorder screen
         Button(
             modifier = Modifier.padding(15.dp),
             onClick = {
                 switchScreens(navController, Screen.HarvestRecorder.route)
             },
             border = BorderStroke(5.dp, Brown),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = DarkGreen,
-                contentColor = Brown
-            )
+            colors = ButtonDefaults.buttonColors(containerColor = DarkGreen, contentColor = Brown)
         ) {
             Text(
                 text = "Record Harvest",
@@ -69,7 +66,7 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
         Divider(color = Brown, modifier = Modifier.height(2.dp))
 
         // Filters
-        // Filter header
+        // Header for the filters
         Text(
             text = "Filter for:",
             style = TextStyle(
@@ -79,8 +76,9 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                 color = Brown
             )
         )
-        // Filter labels
+        // Labels for the filters
         Row(modifier = Modifier.fillMaxWidth()) {
+            // Label for the Date filter
             Text(
                 text = "Date",
                 modifier = Modifier.weight(1f),
@@ -91,6 +89,7 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     color = Brown
                 )
             )
+            // Label for the Item filter
             Text(
                 text = "Item",
                 modifier = Modifier.weight(1.75f),
@@ -101,6 +100,7 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     color = Brown
                 )
             )
+            // Label for the Weight filter
             Text(
                 text = "Weight",
                 modifier = Modifier.weight(1f),
@@ -112,20 +112,16 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                 )
             )
         }
-        // Filter input TextFields
+        // TextFields for inputting the filters.
         var searchDate by remember { mutableStateOf("") }
         var searchItem by remember { mutableStateOf("") }
         var searchWeight by remember { mutableStateOf("") }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(bottom = 10.dp)
-        ) {
+        Row(modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(bottom = 10.dp)) {
+            // TextField for filtering for a Date
             OutlinedTextField(
                 value = searchDate,
                 onValueChange = {
-                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    viewModel.fetchHarvests()
                     searchDate = it
                 },
                 textStyle = TextStyle(
@@ -133,14 +129,13 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .weight(1f)
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp).weight(1f)
             )
+            // TextField for filtering an Item
             OutlinedTextField(
                 value = searchItem,
                 onValueChange = {
-                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    viewModel.fetchHarvests()
                     searchItem = it
                 },
                 textStyle = TextStyle(
@@ -148,14 +143,13 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .weight(1.75f)
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp).weight(1.75f)
             )
+            // TextField for filtering for a Weight
             OutlinedTextField(
                 value = searchWeight,
                 onValueChange = {
-                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    viewModel.fetchHarvests()
                     searchWeight = it
                 },
                 textStyle = TextStyle(
@@ -163,40 +157,29 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .weight(1f)
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp).weight(1f)
             )
         }
 
         Divider(color = Brown, modifier = Modifier.height(2.dp))
 
         // HarvestLog
-        // List headers
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                modifier = Modifier.weight(1F),
-                horizontalArrangement = Arrangement.Center
-            ) {
+        // Headers for the columns
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+            // Header for the Date column
+            Row(modifier = Modifier.weight(1F), horizontalArrangement = Arrangement.Center) {
                 SortButton(
                     onClick = {
-                        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                        viewModel.fetchHarvests()
                         if (sortBy == "D") sortOrder = !sortOrder
                         else sortBy = "D"
                     },
-                    modifier = Modifier
-                        .size(36.dp, 40.dp)
-                        .padding(8.dp, 5.dp),
+                    modifier = Modifier.size(36.dp, 40.dp).padding(8.dp, 5.dp),
                     sortingBy = "D"
                 )
                 Text(
                     text = "Date",
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .height(40.dp),
+                    modifier = Modifier.padding(end = 10.dp).height(40.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
@@ -206,26 +189,20 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                 )
             }
             Divider(color = Brown, modifier = Modifier.size(1.dp, 40.dp))
-            Row(
-                modifier = Modifier.weight(1.75F),
-                horizontalArrangement = Arrangement.Center
-            ) {
+            // Header for the Item column
+            Row(modifier = Modifier.weight(1.75F), horizontalArrangement = Arrangement.Center) {
                 SortButton(
                     onClick = {
-                        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                        viewModel.fetchHarvests()
                         if (sortBy == "I") sortOrder = !sortOrder
                         else sortBy = "I"
                     },
-                    modifier = Modifier
-                        .size(36.dp, 40.dp)
-                        .padding(8.dp, 5.dp),
+                    modifier = Modifier.size(36.dp, 40.dp).padding(8.dp, 5.dp),
                     sortingBy = "I"
                 )
                 Text(
                     text = "Item",
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .height(40.dp),
+                    modifier = Modifier.padding(end = 10.dp).height(40.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
@@ -235,26 +212,20 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                 )
             }
             Divider(color = Brown, modifier = Modifier.size(1.dp, 40.dp))
-            Row(
-                modifier = Modifier.weight(1F),
-                horizontalArrangement = Arrangement.Center
-            ) {
+            // Header for the Weight column
+            Row(modifier = Modifier.weight(1F), horizontalArrangement = Arrangement.Center) {
                 SortButton(
                     onClick = {
-                        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                        viewModel.fetchHarvests()
                         if (sortBy == "W") sortOrder = !sortOrder
                         else sortBy = "W"
                     },
-                    modifier = Modifier
-                        .size(36.dp, 40.dp)
-                        .padding(8.dp, 5.dp),
+                    modifier = Modifier.size(36.dp, 40.dp).padding(8.dp, 5.dp),
                     sortingBy = "W"
                 )
                 Text(
                     text = "Weight",
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .height(40.dp),
+                    modifier = Modifier.padding(end = 10.dp).height(40.dp),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
@@ -267,16 +238,16 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
 
         Divider(color = Brown, modifier = Modifier.height(4.dp))
 
-        // Displays harvestList
+        // Displays all the Harvests in harvestList
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             items(harvestList.sort()) { harvest ->
-                // Check for filters
+                // Check if the Harvest matches the filters
                 if (
                     searchDate in harvest.date &&
                     searchItem in harvest.item &&
                     searchWeight in harvest.weight
                 ) {
-                    // Displays Harvest
+                    // Displays the Harvest
                     DisplayHarvest(harvest = harvest)
                     Divider(color = Brown, modifier = Modifier.height(0.5F.dp))
                 }
@@ -286,27 +257,23 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
 }
 
 /**
- * [Composable] function for displaying a [Row] with the [harvest]'s information.
+ * A [Composable] function for displaying a [Row] showing a [Harvest's][Harvest] data.
  *
- * @param harvest The [Harvest] to be displayed.
+ * @param harvest The [Harvest] to be displayed
  */
 @Composable
 fun DisplayHarvest(harvest: Harvest) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 40.dp, max = 80.dp)
+        modifier = Modifier.fillMaxWidth().heightIn(min = 40.dp, max = 80.dp)
     ) {
+        // Date
         val dateList = harvest.date.split("-")
         val date = dateList[1]+"/"+dateList[2].take(2)+"/"+dateList[0]
         Text(
             text = date,
-            modifier = Modifier
-                .weight(1F)
-                .heightIn(min = 40.dp, max = 80.dp)
-                .padding(10.dp, 5.dp),
+            modifier = Modifier.weight(1F).heightIn(min = 40.dp, max = 80.dp).padding(10.dp, 5.dp),
             style = TextStyle(
                 fontSize = 22.sp,
                 textAlign = TextAlign.Left,
@@ -315,16 +282,12 @@ fun DisplayHarvest(harvest: Harvest) {
         )
         Divider(
             color = Brown,
-            modifier = Modifier
-                .width(1.dp)
-                .fillMaxHeight()
+            modifier = Modifier.width(1.dp).fillMaxHeight()
         )
+        // Item
         Text(
             text = harvest.item,
-            modifier = Modifier
-                .weight(1.75F)
-                .heightIn(min = 40.dp, max = 80.dp)
-                .padding(10.dp, 5.dp),
+            modifier = Modifier.weight(1.75F).heightIn(min = 40.dp, max = 80.dp).padding(10.dp, 5.dp),
             style = TextStyle(
                 fontSize = 22.sp,
                 textAlign = TextAlign.Center,
@@ -333,16 +296,12 @@ fun DisplayHarvest(harvest: Harvest) {
         )
         Divider(
             color = Brown,
-            modifier = Modifier
-                .width(1.dp)
-                .fillMaxHeight()
+            modifier = Modifier.width(1.dp).fillMaxHeight()
         )
+        // Weight
         Text(
             text = "${harvest.weight} lbs.",
-            modifier = Modifier
-                .weight(1F)
-                .heightIn(min = 40.dp, max = 80.dp)
-                .padding(10.dp, 5.dp),
+            modifier = Modifier.weight(1F).heightIn(min = 40.dp, max = 80.dp).padding(10.dp, 5.dp),
             style = TextStyle(
                 fontSize = 22.sp,
                 textAlign = TextAlign.Right,

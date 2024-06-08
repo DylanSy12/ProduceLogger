@@ -3,29 +3,23 @@ package com.example.producelogger
 import android.util.Log
 import okhttp3.ResponseBody
 
-/**
- * A repository class for managing data operations for [Harvest]s.
- */
+/** A repository class for managing data operations for [Harvests][Harvest] */
 class HarvestRepository {
 
     /**
-     * Fetches a list of [Harvest]s from the Google Sheet API.
+     * Fetches a list of [Harvests][Harvest] from the Google Sheet API
      *
-     * @param apiKeyGoogle The API key for accessing the Google Sheet.
-     * @param libraryId The library ID for accessing the Google Sheet.
-     * @return A [HarvestResponse] object containing a list of [Harvest]s or null if the request fails.
+     * @return A [HarvestResponse] object containing a list of [Harvests][Harvest]
      */
-    suspend fun fetchHarvests(apiKeyGoogle: String, libraryId: String): HarvestResponse {
-        return SheetApi.retrofitService.getHarvests(apiKeyGoogle, libraryId)
-    }
+    suspend fun fetchHarvests(): HarvestResponse = 
+        SheetApi.retrofitServiceGET.getHarvests(Constants.USER_CONTENT_KEY, Constants.LIB_ID)
 
     /**
      * Adds a new [Harvest] to the Google Sheet via the API.
      *
-     * @param harvest the [Harvest] object to be added to the sheet.
-     * @return A [ResponseBody] object indicating the result of the operation or null if the request fails.
+     * @param harvest The [Harvest] object to be added to the Google Sheet
+     * @return A [ResponseBody] object indicating the result of the operation
      */
-    suspend fun addHarvest(harvest: Harvest): ResponseBody {
-        return SheetApi.retrofitServicePost.addHarvest(harvest)
-    }
+    suspend fun addHarvest(harvest: Harvest): ResponseBody = 
+        SheetApi.retrofitServicePOST.addHarvest(harvest)
 }

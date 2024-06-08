@@ -38,10 +38,10 @@ import com.example.producelogger.ui.theme.*
 import androidx.lifecycle.ViewModel
 
 /**
- * [Composable] function for displaying the screen for recording [Harvest]s.
+ * A [Composable] function for displaying the screen for recording [Harvests][Harvest]
  *
- * @param navController The [NavController] controlling which screen is displayed.
- * @param viewModel The [ViewModel] for making HTTP requests.
+ * @param navController The [NavController] controlling which screen is displayed
+ * @param viewModel The [ViewModel] for managing [Harvest] data
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +54,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
     val openSpecialCharacterPopup = remember { mutableStateOf(false) }
     val openBackPopup = remember { mutableStateOf(false) }
     Column {
-        // Back button
+        // Button for going back to the HarvestLog screen
         Button(
             modifier = Modifier.padding(10.dp, 70.dp, 0.dp, 0.dp),
             onClick = { openBackPopup.value = true },
@@ -76,8 +76,8 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Input TextFields
-            // Date TextField
+            // TextFields for inputting data
+            // TextField for inputting the Date
             Text(
                 text = "Date",
                 style = TextStyle(
@@ -87,7 +87,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                     color = Brown
                 )
             )
-            // Gets current date and converts it to the correct format
+            // Gets current Date and converts it to the correct format
             val temp = getCurrentDateTime().toString("MM/dd/yyyy")
             var date by remember { mutableStateOf(temp) }
             harvest.value.date = temp
@@ -100,11 +100,9 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .fillMaxWidth()
+                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth()
             )
-            // Item TextField
+            // TextField for inputting the Item
             Text(
                 text = "Item",
                 style = TextStyle(
@@ -124,11 +122,9 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .fillMaxWidth()
+                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth()
             )
-            // Weight TextField
+            // TextField for inputting Weight
             Text(
                 text = "Weight",
                 style = TextStyle(
@@ -148,22 +144,14 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                     textAlign = TextAlign.Center,
                     color = Brown
                 ),
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth(),
                 trailingIcon = {
-                    Text(
-                        text = " lbs.",
-                        style = TextStyle(
-                            fontSize = 35.sp,
-                            color = Brown
-                        )
-                    )
+                    Text(text = " lbs.", style = TextStyle(fontSize = 35.sp, color = Brown))
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
-            // Record button
+            // Button to record the Harvest
             Button(
                 modifier = Modifier.padding(0.dp, 10.dp),
                 onClick = {
@@ -176,11 +164,14 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                         // Records the inputs
                         harvest.value.date = date
                         harvest.value.item = item
-                        // Trims the weight, removes any periods at the end
+                        // Trims the weight to 5 characters, then removes any periods at the end
                         var tempWeight = weight
                         if (weight[tempWeight.length - 1] == '.') tempWeight = weight.take(5)
                         harvest.value.weight = tempWeight
-                        // Opens password popup if required, otherwise records the harvest and switches to the HarvestLog screen
+                        /*
+                        Opens the password popup if required, otherwise records the harvest
+                        and switches to the HarvestLog screen
+                        */
                         if (Constants.REQUIRE_PASSWORD) openPasswordPopup.value = true
                         else {
 //                            database = Database(navController.context)
@@ -209,14 +200,13 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
     }
 
     // Popups
-    // Popup for inputting password
+    // Popup for inputting the password
     when {
         openPasswordPopup.value -> {
             PasswordPopup(
                 onDismissRequest = { openPasswordPopup.value = false },
                 onCorrectPassword = {
                     openPasswordPopup.value = false
-                    Log.e("Harvest", harvest.value.toString())
                     addHarvest(viewModel, harvest.value)
                     switchScreens(navController, Screen.HarvestLog.route)
                 },
@@ -243,7 +233,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
             )
         }
     }
-    // Popup for if the user did not enter values for everything
+    // Popup for if the user did not enter values for all fields
     when {
         openInputPopup.value -> {
             AlertPopup(
@@ -269,7 +259,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
             AlertPopup(
                 onConfirmRequest = {
                     openBackPopup.value = false
-                    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+                    viewModel.fetchHarvests()
                     switchScreens(navController, Screen.HarvestLog.route)
                 },
                 onDismissRequest = { openBackPopup.value = false },
@@ -280,11 +270,11 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
 }
 
 /**
- * [Composable] function for creating a popup asking for the user to input a password.
+ * A [Composable] function for creating a popup asking for the user to input a password
  *
- * @param onDismissRequest What happens when the user closes the popup.
- * @param onCorrectPassword What happens when the user inputs the correct password.
- * @param onIncorrectPassword What happens when the user inputs the incorrect password.
+ * @param onDismissRequest What happens when the user closes the popup
+ * @param onCorrectPassword What happens when the user inputs the correct password
+ * @param onIncorrectPassword What happens when the user inputs the incorrect password
   */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -323,7 +313,7 @@ fun PasswordPopup(
                         color = Brown
                     )
                 )
-                // Password input TextField
+                // TextField for inputting the password
                 TextField(
                     value = inputtedPassword,
                     singleLine = true,
@@ -336,7 +326,7 @@ fun PasswordPopup(
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
-                // Cancel/Confirm buttons
+                // Cancel/Confirm Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -356,7 +346,7 @@ fun PasswordPopup(
                     }
                     TextButton(
                         onClick = {
-                            // Checks for if the password is correct
+                            // Checks for if the inputted password is correct
                             if (inputtedPassword == Constants.PASSWORD) onCorrectPassword()
                             else onIncorrectPassword()
                         },
@@ -378,18 +368,14 @@ fun PasswordPopup(
 }
 
 /**
- * [Composable] function for creating a popup with a message.
+ * A [Composable] function for creating a popup with a message
  *
- * @param onConfirmRequest What happens when the user presses the confirm button.
- * @param onDismissRequest What happens when the user closes the popup.
- * @param text What the popup displays.
+ * @param onConfirmRequest What happens when the user presses the confirm button
+ * @param onDismissRequest What happens when the user closes the popup
+ * @param text What the popup displays
  */
 @Composable
-fun AlertPopup(
-    onConfirmRequest: () -> Unit,
-    onDismissRequest: () -> Unit,
-    text: String
-) {
+fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text: String) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
             modifier = Modifier.wrapContentSize(),
@@ -401,7 +387,7 @@ fun AlertPopup(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header
+                // Header for the popup
                 Text(
                     text = text,
                     style = TextStyle(
@@ -417,7 +403,7 @@ fun AlertPopup(
                         bottom = 10.dp
                     )
                 )
-                // Cancel/Confirm buttons
+                // Cancel/Confirm Buttons
                 Row {
                     if (onConfirmRequest != onDismissRequest) {
                         TextButton(
@@ -459,12 +445,12 @@ fun AlertPopup(
 }
 
 /**
- * Adds the [harvest] to the google sheet, then gets a list of all [Harvest]s in the google sheet.
+ * Adds the [Harvest] to the Google Sheet, then updates [harvestList].
  *
- * @param viewModel The [ViewModel] for making HTTP requests.
- * @param harvest The [Harvest] to be added to the google sheet.
+ * @param viewModel The [ViewModel] for managing [Harvest] data
+ * @param harvest The [Harvest] to be added to the Google Sheet
  */
 fun addHarvest(viewModel: HarvestViewModel, harvest: Harvest) {
     viewModel.addHarvest(harvest)
-    viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+    viewModel.fetchHarvests()
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModel
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -29,13 +30,23 @@ import com.example.producelogger.ui.theme.Brown
 import com.example.producelogger.ui.theme.DarkGreen
 import com.example.producelogger.ui.theme.ProduceLoggerTheme
 
+/**
+ * The main [activity][ComponentActivity] of the app
+ *
+ * @property navController The [NavHostController] controlling which screen is displayed
+ * @property viewModel The [ViewModel] for managing [Harvest] data
+ * @property refreshManager The [RefreshManager] for managing automatic updates to the [harvestList]
+ */
 class MainActivity : ComponentActivity() {
 
+    /** The [NavHostController] controlling which screen is displayed */
     private lateinit var navController: NavHostController
 
+    /** The [ViewModel] for managing [Harvest] data */
     private lateinit var viewModel: HarvestViewModel
 
     companion object {
+        /** The [RefreshManager] for managing automatic updates to the [harvestList] */
         val refreshManager = RefreshManager()
     }
 
@@ -44,15 +55,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Sets up viewModel
         viewModel = ViewModelProvider(this)[HarvestViewModel::class.java]
 
+        // Whenever the data stored in viewModel is updated, updates harvestList
         viewModel.harvests.observe(this) { harvests ->
             harvestList = harvests as ArrayList<Harvest>
         }
 
-        viewModel.fetchHarvests(Constants.API_KEY, Constants.LIB_ID)
+        // Initial fetch from the Google Sheet
+        viewModel.fetchHarvests()
+
+        // Starts the automatic refresh
         refreshManager.start(lifecycleScope, viewModel)
-        // Sets screen content
+
+        // Sets the screen's content
         setContent {
             ProduceLoggerTheme {
                 Surface(
@@ -60,7 +77,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
-                        // App header
+                        // Header for the app
                         topBar = {
                             TopAppBar(
                                 colors = TopAppBarDefaults.largeTopAppBarColors(
@@ -70,9 +87,7 @@ class MainActivity : ComponentActivity() {
                                 title = {
                                     Row(
                                         horizontalArrangement = Arrangement.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(bottom = 5.dp)
+                                        modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp)
                                     ) {
                                         Text(
                                             text = "Produce Logger",
@@ -83,7 +98,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) {
-                        // Determines which screen to display
+                        // Displays the screen
                         navController = rememberNavController()
                         SetupNavGraph(navController = navController, viewModel = viewModel)
                     }
