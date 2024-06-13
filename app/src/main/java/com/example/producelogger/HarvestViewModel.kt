@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -32,10 +33,11 @@ class HarvestViewModel(private val repository: HarvestRepository = HarvestReposi
      */
     fun fetchHarvests() {
         // Launch a coroutine in ViewModelScope
-        viewModelScope.launch {
+        viewModelScope.launch/*(Dispatchers.Unconfined)*/ {
             // Fetch the harvest data from the repository
             val harvestResponse = repository.fetchHarvests()
             // If the response is non-null, update _harvests LiveData
+//            _harvests.postValue(repository.fetchHarvests().data)
             _harvests.value = harvestResponse.data
         }
     }

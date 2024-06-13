@@ -28,7 +28,7 @@ class RefreshManager {
                 viewModel.fetchHarvests()
                 Log.i("data-refresh", "Fetched data from sheet successfully")
 //                refresh()
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 Log.e("data-refresh", "Error fetching data $it")
             }
         }.launchIn(scope)

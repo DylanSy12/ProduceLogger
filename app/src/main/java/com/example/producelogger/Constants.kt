@@ -16,7 +16,7 @@ class Constants {
         const val PASSWORD: String = "isidore"
         
         /** The interval, in seconds, between automatic data refreshes */
-        const val REFRESH_INTERVAL = 120
+        const val REFRESH_INTERVAL = 300
         
         // API information
         /** The User Content Key of the API */

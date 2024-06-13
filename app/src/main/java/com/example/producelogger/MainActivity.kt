@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
         // Whenever the data stored in viewModel is updated, updates harvestList
         viewModel.harvests.observe(this) { harvests ->
-            harvestList = harvests as ArrayList<Harvest>
+            if (harvests.isNotEmpty()) harvestList = harvests as ArrayList<Harvest>
         }
 
         // Initial fetch from the Google Sheet
