@@ -60,7 +60,22 @@ class MainActivity : ComponentActivity() {
 
         // Whenever the data stored in viewModel is updated, updates harvestList
         viewModel.harvests.observe(this) { harvests ->
-            if (harvests.isNotEmpty()) harvestList = harvests as ArrayList<Harvest>
+            if (harvests.isNotEmpty()) {
+                harvestList = harvests as ArrayList<Harvest>
+                database = Database(this)
+                val tempList: ArrayList<Harvest> = database.harvests
+                for (harvest in tempList) {
+                    if (harvest !in harvestList) {
+                        viewModel.addHarvest(harvest)
+                        (harvestList as ArrayList<Harvest>).add(harvest)
+                    }
+                }
+                database.updateHarvests(harvestList as ArrayList<Harvest>)
+            }
+            else {
+                database = Database(this)
+                harvestList = database.harvests
+            }
         }
 
         // Initial fetch from the Google Sheet

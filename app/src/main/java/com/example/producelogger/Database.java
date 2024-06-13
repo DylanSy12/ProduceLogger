@@ -43,6 +43,23 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateHarvests(ArrayList<Harvest> harvests) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("create table " + TABLE_NAME + " ( " + Column_Date + " VARSTRING, "
+                + Column_Item + " VARSTRING, " + Column_Weight + " VARSTRING);");
+        for (Harvest harvest : harvests) {
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(Column_Date, harvest.getDate());
+            contentValues.put(Column_Item, harvest.getItem());
+            contentValues.put(Column_Weight, harvest.getWeight());
+
+            db.insert(TABLE_NAME, null, contentValues);
+        }
+        db.close();
+    }
+
     public ArrayList<Harvest> getHarvests() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
@@ -51,10 +68,11 @@ public class Database extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
+//                cursor.getColumnCount();
                 harvest = new Harvest();
-                harvest.setDate(cursor.getString(1));
-                harvest.setItem(cursor.getString(2));
-                harvest.setWeight(cursor.getString(3));
+                harvest.setDate(cursor.getString(0));
+                harvest.setItem(cursor.getString(1));
+                harvest.setWeight(cursor.getString(2));
                 harvests.add(harvest);
             }
         }

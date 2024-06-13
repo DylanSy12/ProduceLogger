@@ -17,7 +17,7 @@ class HarvestRepository {
         try {
             SheetApi.retrofitServiceGET.getHarvests(Constants.USER_CONTENT_KEY, Constants.LIB_ID)
         } catch(e: Exception) {
-            HarvestResponse(harvestList)
+            HarvestResponse(listOf())
         }
 
     /**

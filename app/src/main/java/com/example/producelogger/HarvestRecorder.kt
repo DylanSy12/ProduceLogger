@@ -174,8 +174,8 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                         */
                         if (Constants.REQUIRE_PASSWORD) openPasswordPopup.value = true
                         else {
-//                            database = Database(navController.context)
-//                            database.addHarvest(harvest)
+                            database = Database(navController.context)
+                            database.addHarvest(harvest.value)
                             addHarvest(viewModel, harvest.value)
                             switchScreens(navController, Screen.HarvestLog.route)
                         }
@@ -206,6 +206,8 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
             PasswordPopup(
                 onDismissRequest = { openPasswordPopup.value = false },
                 onCorrectPassword = {
+                    database = Database(navController.context)
+                    database.addHarvest(harvest.value)
                     openPasswordPopup.value = false
                     addHarvest(viewModel, harvest.value)
                     switchScreens(navController, Screen.HarvestLog.route)
