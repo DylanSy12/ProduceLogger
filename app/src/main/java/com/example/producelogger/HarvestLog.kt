@@ -40,16 +40,12 @@ import com.example.producelogger.ui.theme.*
 fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewModel) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 60.dp, bottom = 5.dp)
+        modifier = Modifier.fillMaxSize().padding(top = 60.dp, bottom = 5.dp)
     ) {
         // Button to navigate to the HarvestRecorder screen
         Button(
             modifier = Modifier.padding(15.dp),
-            onClick = {
-                switchScreens(navController, Screen.HarvestRecorder.route)
-            },
+            onClick = { switchScreens(navController, Screen.HarvestRecorder.route) },
             border = BorderStroke(5.dp, Brown),
             colors = ButtonDefaults.buttonColors(containerColor = DarkGreen, contentColor = Brown)
         ) {
@@ -280,10 +276,7 @@ fun DisplayHarvest(harvest: Harvest) {
                 color = Brown
             )
         )
-        Divider(
-            color = Brown,
-            modifier = Modifier.width(1.dp).fillMaxHeight()
-        )
+        Divider(color = Brown, modifier = Modifier.width(1.dp).fillMaxHeight())
         // Item
         Text(
             text = harvest.item,
@@ -294,10 +287,7 @@ fun DisplayHarvest(harvest: Harvest) {
                 color = Brown
             )
         )
-        Divider(
-            color = Brown,
-            modifier = Modifier.width(1.dp).fillMaxHeight()
-        )
+        Divider(color = Brown, modifier = Modifier.width(1.dp).fillMaxHeight())
         // Weight
         Text(
             text = "${harvest.weight} lbs.",
