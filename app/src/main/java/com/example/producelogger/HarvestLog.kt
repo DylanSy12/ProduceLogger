@@ -45,7 +45,7 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
         // Button to navigate to the HarvestRecorder screen
         Button(
             modifier = Modifier.padding(15.dp),
-            onClick = { switchScreens(navController, Screen.HarvestRecorder.route) },
+            onClick = { switchScreens(navController, Screen.HarvestRecorder.route, viewModel) },
             border = BorderStroke(5.dp, Brown),
             colors = ButtonDefaults.buttonColors(containerColor = DarkGreen, contentColor = Brown)
         ) {
@@ -264,18 +264,10 @@ fun DisplayHarvest(harvest: Harvest) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().heightIn(min = 40.dp, max = 80.dp)
     ) {
-        Log.e("Harvest", harvest.toString())
+//        Log.e("Harvest", harvest.toString())
         // Date
-        lateinit var date: String
-        if (harvest.date[2] != '/') {
-            val dateList = harvest.date.split("-")
-            date = dateList[1] + "/" + dateList[2].take(2) + "/" + dateList[0]
-        }
-        else {
-            date = harvest.date
-        }
         Text(
-            text = date,
+            text = harvest.date,
             modifier = Modifier.weight(1F).heightIn(min = 40.dp, max = 80.dp).padding(10.dp, 5.dp),
             style = TextStyle(
                 fontSize = 22.sp,

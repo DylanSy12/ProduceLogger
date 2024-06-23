@@ -176,8 +176,8 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                         else {
                             database = Database(navController.context)
                             database.addHarvest(harvest.value)
-                            addHarvest(viewModel, harvest.value)
-                            switchScreens(navController, Screen.HarvestLog.route)
+//                            addHarvest(viewModel, harvest.value)
+                            switchScreens(navController, Screen.HarvestLog.route, viewModel)
                         }
                     }
                 },
@@ -209,8 +209,8 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                     database = Database(navController.context)
                     database.addHarvest(harvest.value)
                     openPasswordPopup.value = false
-                    addHarvest(viewModel, harvest.value)
-                    switchScreens(navController, Screen.HarvestLog.route)
+//                    addHarvest(viewModel, harvest.value)
+                    switchScreens(navController, Screen.HarvestLog.route, viewModel)
                 },
                 onIncorrectPassword = {
                     openIncorrectPasswordPopup.value = true
@@ -262,7 +262,7 @@ fun HarvestRecorderComposable(navController: NavController, viewModel: HarvestVi
                 onConfirmRequest = {
                     openBackPopup.value = false
                     viewModel.fetchHarvests()
-                    switchScreens(navController, Screen.HarvestLog.route)
+                    switchScreens(navController, Screen.HarvestLog.route, viewModel)
                 },
                 onDismissRequest = { openBackPopup.value = false },
                 text = "Going back will clear inputs, are you sure?"
@@ -454,5 +454,5 @@ fun AlertPopup(onConfirmRequest: () -> Unit, onDismissRequest: () -> Unit, text:
  */
 fun addHarvest(viewModel: HarvestViewModel, harvest: Harvest) {
     viewModel.addHarvest(harvest)
-    viewModel.fetchHarvests()
+//    viewModel.fetchHarvests()
 }

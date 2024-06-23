@@ -38,6 +38,17 @@ class HarvestViewModel(private val repository: HarvestRepository = HarvestReposi
             val harvestResponse = repository.fetchHarvests()
             // If the response is non-null, update _harvests LiveData
 //            _harvests.postValue(repository.fetchHarvests().data)
+            for (harvest in harvestResponse.data) {
+                lateinit var date: String
+                if (harvest.date[2] != '/') {
+                    val dateList = harvest.date.split("-")
+                    date = dateList[1] + "/" + dateList[2].take(2) + "/" + dateList[0]
+                }
+                else {
+                    date = harvest.date
+                }
+                harvest.date = date
+            }
             _harvests.value = harvestResponse.data
         }
     }

@@ -61,18 +61,22 @@ class MainActivity : ComponentActivity() {
         // Whenever the data stored in viewModel is updated, updates harvestList
         viewModel.harvests.observe(this) { harvests ->
             if (harvests.isNotEmpty()) {
+//                Log.e("Updating", "Has Data")
                 harvestList = harvests as ArrayList<Harvest>
                 database = Database(this)
                 val tempList: ArrayList<Harvest> = database.harvests
                 for (harvest in tempList) {
                     if (harvest !in harvestList) {
+//                        Log.e("Harvest Not In List", harvest.toString())
                         viewModel.addHarvest(harvest)
-                        (harvestList as ArrayList<Harvest>).add(harvest)
+//                        (harvestList as ArrayList<Harvest>).add(harvest)
                     }
                 }
+//                viewModel.fetchHarvests()
                 database.updateHarvests(harvestList as ArrayList<Harvest>)
             }
             else {
+//                Log.e("Updating", "Empty")
                 database = Database(this)
                 harvestList = database.harvests
             }

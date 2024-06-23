@@ -8,11 +8,12 @@ import androidx.navigation.NavController
  * @param navController The [NavController] controlling which screen is displayed
  * @param route The screen that it will switch to
  */
-fun switchScreens(navController: NavController, route: String) {
+fun switchScreens(navController: NavController, route: String, viewModel: HarvestViewModel) {
     navController.navigate(route) {
         popUpTo(route) {
             saveState = true
             inclusive = true
         }
     }
+    if (route != Screen.HarvestRecorder.route) viewModel.fetchHarvests()
 }

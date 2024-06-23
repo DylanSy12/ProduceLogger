@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public void updateHarvests(ArrayList<Harvest> harvests) {
+//        Log.e("DatabaseUpdate", harvests.toString());
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("create table " + TABLE_NAME + " ( " + Column_Date + " VARSTRING, "
@@ -78,6 +80,7 @@ public class Database extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+//        Log.e("DatabaseGet", harvests.toString());
         return harvests;
     }
 
