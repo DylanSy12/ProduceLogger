@@ -3,6 +3,8 @@ package com.example.producelogger
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.producelogger.data.Database
+import com.example.producelogger.data.Harvest
 
 /**
  * [Database] that stores [Harvest]s locally

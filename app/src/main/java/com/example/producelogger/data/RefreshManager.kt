@@ -1,14 +1,14 @@
-package com.example.producelogger
+package com.example.producelogger.data
 
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.producelogger.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.UUID
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 

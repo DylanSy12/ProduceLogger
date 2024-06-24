@@ -1,4 +1,6 @@
-package com.example.producelogger
+package com.example.producelogger.navigation
+
+import com.example.producelogger.composables.screens.*
 
 /**
  * A sealed class storing the routing for the screens

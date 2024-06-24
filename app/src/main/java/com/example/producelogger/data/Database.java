@@ -1,11 +1,10 @@
-package com.example.producelogger;
+package com.example.producelogger.data;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -32,6 +31,11 @@ public class Database extends SQLiteOpenHelper {
                 + Column_Item + " VARSTRING, " + Column_Weight + " VARSTRING);");
     }
 
+    /**
+     * Adds a new Harvest to the Database
+     *
+     * @param harvest The Harvest to be added to the Database
+     */
     public void addHarvest(Harvest harvest) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -44,6 +48,12 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Drops the current Database, then creates a new Database and adds all the Harvests in
+     * harvests to it
+     *
+     * @param harvests The ArrayList of Harvests to be added
+     */
     public void updateHarvests(ArrayList<Harvest> harvests) {
 //        Log.e("DatabaseUpdate", harvests.toString());
         SQLiteDatabase db = this.getWritableDatabase();
@@ -62,6 +72,11 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    /***
+     * Gets an ArrayList of all Harvests recorded in the Database
+     *
+     * @return An ArrayList containing all the Harvests recorded in the Database
+     */
     public ArrayList<Harvest> getHarvests() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);

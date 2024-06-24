@@ -1,5 +1,7 @@
 package com.example.producelogger
 
+import com.example.producelogger.data.Harvest
+
 /**
  * Sorts the [List] of [Harvests][Harvest] by different values of the [Harvests][Harvest] depending
  * on the value of [sortBy] in ascending/descending order based on the value of [sortOrder]

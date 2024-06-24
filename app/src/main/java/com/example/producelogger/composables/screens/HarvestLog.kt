@@ -1,8 +1,9 @@
-package com.example.producelogger
+package com.example.producelogger.composables.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,6 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.producelogger.data.Harvest
+import com.example.producelogger.data.HarvestViewModel
+import com.example.producelogger.navigation.Screen
+import com.example.producelogger.composables.SortButton
+import com.example.producelogger.harvestList
+import com.example.producelogger.sort
+import com.example.producelogger.sortBy
+import com.example.producelogger.sortOrder
+import com.example.producelogger.navigation.switchScreens
 import com.example.producelogger.ui.theme.*
 
 /**
@@ -35,7 +45,7 @@ import com.example.producelogger.ui.theme.*
  * @param viewModel The [ViewModel] for managing [Harvest] data
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewModel) {
     Column(
@@ -244,7 +254,16 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
                     searchWeight in harvest.weight
                 ) {
                     // Displays the Harvest
-                    DisplayHarvest(harvest = harvest)
+                    DisplayHarvest(
+                        harvest = harvest,
+                        modifier = Modifier
+                            .combinedClickable(
+                                onClick = {},
+                                onLongClick = {
+
+                                }
+                            )
+                    )
                     Divider(color = Brown, modifier = Modifier.height(0.5F.dp))
                 }
             }
@@ -258,11 +277,11 @@ fun HarvestLogComposable(navController: NavController, viewModel: HarvestViewMod
  * @param harvest The [Harvest] to be displayed
  */
 @Composable
-fun DisplayHarvest(harvest: Harvest) {
+fun DisplayHarvest(harvest: Harvest, modifier: Modifier) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().heightIn(min = 40.dp, max = 80.dp)
+        modifier = modifier.fillMaxWidth().heightIn(min = 40.dp, max = 80.dp)
     ) {
 //        Log.e("Harvest", harvest.toString())
         // Date

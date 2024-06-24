@@ -21,3 +21,17 @@ fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String 
  * @return The current [Date]
  */
 fun getCurrentDateTime(): Date = Calendar.getInstance().time
+
+
+/**
+ * Formats a [String] representing a [Date] into mm/dd/yyyy format
+ *
+ * @param date The [String] to be formatted
+ * @return [date] reformatted into mm/dd/yyyy format
+ */
+fun reformatDate(date: String): String =
+    if (date[2] != '/') {
+        val dateList = date.split("-")
+        dateList[1] + "/" + dateList[2].take(2) + "/" + dateList[0]
+    }
+    else date

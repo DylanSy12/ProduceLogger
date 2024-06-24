@@ -1,10 +1,14 @@
-package com.example.producelogger
+package com.example.producelogger.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.producelogger.data.HarvestViewModel
+import com.example.producelogger.composables.screens.HarvestLogComposable
+import com.example.producelogger.composables.screens.HarvestRecorderComposable
+import com.example.producelogger.data.Harvest
 
 /**
  * A [Composable] function to display the current screen

@@ -1,4 +1,4 @@
-package com.example.producelogger
+package com.example.producelogger.composables
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -10,8 +10,11 @@ import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.producelogger.sortBy
+import com.example.producelogger.sortOrder
 import com.example.producelogger.ui.theme.Brown
 import com.example.producelogger.ui.theme.DarkGreen
+import com.example.producelogger.harvestList
 
 /**
  * A [Composable] function for the buttons that control how the [harvestList] is sorted

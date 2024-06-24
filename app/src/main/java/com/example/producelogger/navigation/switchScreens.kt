@@ -1,6 +1,7 @@
-package com.example.producelogger
+package com.example.producelogger.navigation
 
 import androidx.navigation.NavController
+import com.example.producelogger.data.HarvestViewModel
 
 /**
  * Switches the screen currently being displayed

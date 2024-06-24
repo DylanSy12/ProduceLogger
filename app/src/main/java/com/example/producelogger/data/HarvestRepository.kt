@@ -1,7 +1,6 @@
-package com.example.producelogger
+package com.example.producelogger.data
 
-import android.util.Log
-import okhttp3.Response
+import com.example.producelogger.Constants
 import okhttp3.ResponseBody
 import okhttp3.internal.EMPTY_RESPONSE
 

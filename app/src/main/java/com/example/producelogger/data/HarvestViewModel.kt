@@ -1,11 +1,10 @@
-package com.example.producelogger
+package com.example.producelogger.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import com.example.producelogger.reformatDate
 import kotlinx.coroutines.launch
 
 /**
@@ -39,15 +38,7 @@ class HarvestViewModel(private val repository: HarvestRepository = HarvestReposi
             // If the response is non-null, update _harvests LiveData
 //            _harvests.postValue(repository.fetchHarvests().data)
             for (harvest in harvestResponse.data) {
-                lateinit var date: String
-                if (harvest.date[2] != '/') {
-                    val dateList = harvest.date.split("-")
-                    date = dateList[1] + "/" + dateList[2].take(2) + "/" + dateList[0]
-                }
-                else {
-                    date = harvest.date
-                }
-                harvest.date = date
+                harvest.date = reformatDate(harvest.date)
             }
             _harvests.value = harvestResponse.data
         }

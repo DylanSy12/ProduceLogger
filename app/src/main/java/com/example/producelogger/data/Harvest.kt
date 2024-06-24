@@ -1,4 +1,4 @@
-package com.example.producelogger
+package com.example.producelogger.data
 
 import kotlinx.serialization.Serializable
 

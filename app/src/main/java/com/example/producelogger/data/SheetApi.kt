@@ -1,6 +1,6 @@
-package com.example.producelogger
+package com.example.producelogger.data
 
-import android.util.Log
+import com.example.producelogger.Constants
 import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET

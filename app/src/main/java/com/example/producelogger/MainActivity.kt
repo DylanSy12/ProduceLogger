@@ -2,7 +2,6 @@ package com.example.producelogger
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.activity.compose.setContent
@@ -26,6 +25,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.producelogger.data.Database
+import com.example.producelogger.data.Harvest
+import com.example.producelogger.data.HarvestViewModel
+import com.example.producelogger.data.RefreshManager
+import com.example.producelogger.navigation.SetupNavGraph
 import com.example.producelogger.ui.theme.Brown
 import com.example.producelogger.ui.theme.DarkGreen
 import com.example.producelogger.ui.theme.ProduceLoggerTheme
